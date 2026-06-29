@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2020-tallets politiske kompass (norsk klasseromsversjon)</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1c2333; --muted:#5b6478;
+    --line:#e4e7ef; --accent:#3f51b5;
+    --wc:#7c3aed; --tn:#0891b2; --hd:#16a34a; --dd:#ea580c;
+    --shadow:0 1px 3px rgba(20,30,60,.08),0 8px 24px rgba(20,30,60,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 80px}
+  h1{font-size:1.7rem;margin:.2em 0 .1em;letter-spacing:-.01em}
+  h2{font-size:1.15rem;margin:0}
+  .sub{color:var(--muted);font-size:.98rem;margin:.2em 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);padding:22px 22px}
+  .pill{display:inline-block;font-size:.74rem;font-weight:600;letter-spacing:.03em;
+    text-transform:uppercase;padding:4px 10px;border-radius:999px;color:#fff}
+  .btn{appearance:none;border:0;border-radius:12px;background:var(--accent);color:#fff;
+    font-size:1rem;font-weight:600;padding:12px 20px;cursor:pointer;transition:.15s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.ghost{background:#eef0f7;color:var(--ink)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .between{justify-content:space-between}
+  .muted{color:var(--muted)}
+  .small{font-size:.88rem}
+  .disc{background:#fff8e9;border:1px solid #f3e2b8;border-radius:12px;padding:12px 14px;
+    font-size:.9rem;color:#6b5a23}
+  .qsec{display:none}
+  .qsec.active{display:block}
+  .q{padding:18px 0;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:0}
+  .q .qt{font-weight:600;margin:0 0 12px}
+  .opts{display:grid;gap:8px}
+  .opt{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:11px;
+    padding:11px 13px;cursor:pointer;transition:.12s;font-size:.96rem;background:#fff}
+  .opt:hover{border-color:#c7ccdc;background:#fafbff}
+  .opt input{accent-color:var(--accent);width:17px;height:17px;flex:none}
+  .opt.sel{border-color:var(--accent);background:#f1f3ff}
+  .pbar{height:8px;background:#e9ecf5;border-radius:99px;overflow:hidden;margin:14px 0 4px}
+  .pbar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+  .nav{display:flex;justify-content:space-between;margin-top:22px;gap:12px}
+  .axis{padding:20px 0;border-top:1px solid var(--line)}
+  .axis:first-child{border-top:0}
+  .track{position:relative;height:38px;margin:12px 0 6px;border-radius:10px;
+    background:linear-gradient(90deg,#eef0f7, #f7f8fc, #eef0f7)}
+  .track .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#cfd5e6}
+  .track .mark{position:absolute;top:50%;transform:translate(-50%,-50%);
+    width:22px;height:22px;border-radius:50%;border:3px solid #fff;box-shadow:var(--shadow)}
+  .ends{display:flex;justify-content:space-between;font-size:.82rem;font-weight:600}
+  .verdict{font-size:.92rem;margin:8px 0 0}
+  .tcard{border:1px solid var(--line);border-radius:14px;padding:16px;background:#f2f3ff;margin-bottom:6px}
+  .trow{display:flex;align-items:center;gap:14px}
+  .tcode{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.5rem;font-weight:700;letter-spacing:.08em;color:#3f51b5;background:#fff;border:1px solid #e4e7ef;border-radius:10px;padding:6px 12px}
+  .tname{font-weight:600;font-size:1.05rem}
+  .tfig{color:var(--muted);font-size:.9rem}
+  .tdesc{margin-top:10px;font-size:.95rem}
+  .tclar{margin-top:6px;font-size:.8rem;color:var(--muted)}
+  .trare{font-size:.9rem;color:#6b5a23;background:#fff8e9;border:1px solid #f3e2b8;border-radius:10px;padding:8px 10px;margin-bottom:12px}
+  .tlist{display:grid;gap:6px;margin:8px 0 12px}
+  .trowmini{display:flex;gap:10px;align-items:baseline;font-size:.9rem}
+  .trowmini.on{background:#f1f3ff;border-radius:8px;padding:5px 7px;margin:-5px -7px}
+  .tmini{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:600;color:#3f51b5;min-width:54px}
+  details{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:#fbfcff}
+  details>summary{cursor:pointer;padding:11px 0;font-weight:600;font-size:.9rem;color:var(--accent)}
+  details p{margin:0 0 12px;font-size:.9rem;color:var(--muted)}
+  ul.disc-q{margin:.4em 0 0;padding-left:1.1em}
+  ul.disc-q li{margin:.35em 0}
+  @media print{.btn,.nav,.no-print{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro">
+    <h1>2020-tallets politiske kompass</h1>
+    <p class="sub">Norsk klasseromsversjon. Laget for politikk og menneskerettigheter (PoMe) og sosialantropologi.</p>
+    <div class="card" style="margin-top:18px">
+      <p>Den tradisjonelle venstre/høyre-aksen fanger stadig dårligere hva folk faktisk er uenige om. Denne testen prøver fire nyere akser:</p>
+      <p style="margin:14px 0 4px"><b style="color:var(--wc)">Woke ↔ Chud</b> &nbsp;Identitet, kjønn og kultur.<br>
+      <b style="color:var(--tn)">Techbro ↔ Neo-luddist</b> &nbsp;Teknologi, KI og framtid.<br>
+      <b style="color:var(--hd)">Hopepilled ↔ Doomer</b> &nbsp;Tillit til systemet og til framtida.<br>
+      <b style="color:var(--dd)">Davos ↔ Dubai</b> &nbsp;Globalisme mot nasjonalisme, og styreform.</p>
+      <div class="disc" style="margin-top:16px">
+        Dette er et <b>diskusjonsverktøy</b>, ikke en vitenskapelig test. Det finnes ingen riktige svar, og resultatet sier mer om hvordan spørsmål er formulert enn om hvem du «er». Det er en del av poenget: i timen skal vi også kritisere selve testen.
+      </div>
+      <div class="row" style="margin-top:18px">
+        <button class="btn" onclick="start()">Start testen</button>
+        <span class="muted small">57 spørsmål, omtrent 9 minutter.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" style="display:none">
+    <div class="row between">
+      <h2 id="secTitle">&nbsp;</h2>
+      <span class="pill" id="secPill">&nbsp;</span>
+    </div>
+    <div class="pbar"><i id="pfill"></i></div>
+    <div class="muted small" id="pcount">Besvart: 0 / 57</div>
+
+    <div class="card" id="qcard" style="margin-top:14px"></div>
+
+    <div class="nav">
+      <button class="btn ghost" id="prevBtn" onclick="go(-1)">Forrige</button>
+      <button class="btn" id="nextBtn" onclick="go(1)">Neste</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" style="display:none">
+    <h1>Din profil</h1>
+    <p class="sub no-print">Husk at dette er et samtaleverktøy. Bruk diskusjonsspørsmålene nederst.</p>
+    <div class="card" style="margin-top:16px" id="resCard"></div>
+
+    <div class="card" style="margin-top:16px">
+      <h2 style="margin-bottom:8px">Diskusjonsspørsmål</h2>
+      <ul class="disc-q">
+        <li>Hvilke spørsmål var vanskeligst å svare på, og hvorfor? Manglet det et svaralternativ?</li>
+        <li>Finn to spørsmål du mener er <b>ledende</b> eller dårlig formulert. Hva gjør det med målingen (validitet)?</li>
+        <li>Noen handlinger ble delt opp (butikktyveri, piratkopiering og snik). Hvorfor er de moralsk forskjellige? Bør de skåre likt?</li>
+        <li>Hvilke referanser er typisk vestlige eller angloamerikanske? Hvordan ville spørsmålet sett ut fra et ståsted i for eksempel Brasil, Nigeria eller Indonesia (etnosentrisme og kulturrelativisme)?</li>
+        <li>Tror du de fire aksene fanger de viktigste skillelinjene i 2020-tallets politikk? Hva mangler for Norge?</li>
+        <li>Måler testen holdningene dine, eller bare hvilke ord og referanser du kjenner fra før?</li>
+        <li>Kjente du deg igjen i typen din, eller forsvant nyansene? Hvilken akse passet dårligst?</li>
+      </ul>
+    </div>
+
+    <div class="nav no-print">
+      <button class="btn ghost" onclick="location.reload()">Ta testen på nytt</button>
+      <button class="btn" onclick="window.print()">Skriv ut / lagre PDF</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- DATA + REN SKAARINGSLOGIKK (ingen DOM) -->
+<script id="logic">
+const AXES = [
+  { id:'wc', left:'Woke', right:'Chud', title:'Identitet og kultur', color:'#7c3aed',
+    descLeft:'Du legger stor vekt på identitet, likestilling og oppreisning for historisk urett.',
+    descMid:'Du veier verdispørsmål mot hverandre fra sak til sak.',
+    descRight:'Du er skeptisk til identitetspolitikk og vektlegger tradisjon og likebehandling framfor særtiltak.',
+    faglig:'Aksen tilsvarer i praksis verdiaksen GAL-TAN i statsvitenskapen (grønn/alternativ/liberal mot tradisjon/autoritær/nasjonal). Den er et eksempel på en ny skillelinje, slik Rokkans modell forutsier at de kan vokse fram. Sosialantropologisk handler mye her om identitet, etnosentrisme og kulturrelativisme.' },
+  { id:'tn', left:'Techbro', right:'Neo-luddist', title:'Teknologi og framtid', color:'#0891b2',
+    descLeft:'Du er optimist på teknologiens vegne og vil ta i bruk nytt raskt.',
+    descMid:'Du ser både muligheter og risiko i ny teknologi.',
+    descRight:'Du er skeptisk til teknologisk akselerasjon og vil verne om mennesker, arbeid og natur.',
+    faglig:'Aksen måler teknologioptimisme mot teknologiskepsis, og knytter an til debatten om postmaterialisme (Inglehart). Flere spørsmål er bevisst nøytralt formulert med en skala mellom begge poler for å dempe ja-skjevhet (akkvies).' },
+  { id:'hd', left:'Hopepilled', right:'Doomer', title:'System og framtidstro', color:'#16a34a',
+    descLeft:'Du har tillit til samfunnet og tror problemer kan løses.',
+    descMid:'Du veksler mellom tillit og skepsis til systemet.',
+    descRight:'Du har lav tillit til systemet og er pessimistisk om framtida.',
+    faglig:'Aksen måler systemtillit mot mistillit og avmakt. Norge skårer i undersøkelser høyt på institusjonell tillit, så aksen er nyttig for å diskutere hva tillit gjør med et demokrati, og hvordan konspirasjonstenkning oppstår. Merk skillet mellom legitim maktkritikk og ren konspirasjonstenkning.' },
+  { id:'dd', left:'Davos', right:'Dubai', title:'Globalisme og styreform', color:'#ea580c',
+    descLeft:'Du foretrekker internasjonalt samarbeid, frie valg og sterke menneskerettigheter.',
+    descMid:'Du veier globalt samarbeid og nasjonal kontroll mot hverandre.',
+    descRight:'Du vektlegger nasjonal kontroll og effektiv styring, om nødvendig på bekostning av demokratiske former.',
+    faglig:'Aksen kombinerer globalisme mot nasjonalisme med demokratisk mot autoritær styreform. Den er sentral i PoMe: makt, styreformer, menneskerettigheter og internasjonalt samarbeid.' }
+];
+
+const LIKERT = ["Helt enig","Delvis enig","Verken enig eller uenig","Delvis uenig","Helt uenig"];
+function likert(dir){ return LIKERT.map((t,i)=>({t, v: dir*[2,1,0,-1,-2][i]})); }
+const ETIKK = [
+  {t:'Helt greit', v:-2},{t:'Stort sett greit', v:-1},{t:'Kommer an på', v:0},
+  {t:'Som regel galt', v:1},{t:'Alltid galt', v:2}];
+
+const Q = [
+  // ---- Woke / Chud ----
+  {a:'wc', t:'Trans kvinner er kvinner, og trans menn er menn.', dir:1},
+  {a:'wc', t:'Hvor mange kjønn finnes det?', opts:[
+    {t:'Kjønn er et spekter med mange mulige svar', v:2},
+    {t:'Flere enn to', v:1},
+    {t:'Jeg vet ikke', v:0},
+    {t:'To, men med rom for unntak', v:-1},
+    {t:'To', v:-2}]},
+  {a:'wc', t:'Innvandring skaper flere problemer enn den løser.', dir:-1},
+  {a:'wc', t:'Jeg støtter kvotering (for eksempel av kjønn eller minoriteter) for å rette opp skjevheter i samfunnet.', dir:1},
+  {a:'wc', t:'Hatefulle ytringer bør være lovlige, fordi ytringsfriheten må veie tyngst.', dir:-1},
+  {a:'wc', t:'I dagens samfunn har kvinner det lettere enn menn.', dir:-1},
+  {a:'wc', t:'Hovedårsaken til kriminalitet er fattigdom og dårlige levekår.', dir:1},
+  {a:'wc', t:'Hensynet til mangfold (etnisitet, kjønn, legning) i film, spill og reklame har gått for langt.', dir:-1},
+  {a:'wc', t:'Land som har tjent på kolonialisme eller slaveri, bør gi en form for oppreisning til dem som ble rammet.', dir:1},
+  {a:'wc', t:'Historieundervisningen gir et for ensidig og vestlig bilde av fortida.', dir:1},
+  {a:'wc', t:'Samers rett til land og reindrift bør veie tyngre enn utbygging, for eksempel av vindkraft.', dir:1},
+  {a:'wc', t:'Tradisjonelle kjønnsroller for menn og kvinner er stort sett naturlige og bør respekteres.', dir:-1},
+  {a:'wc', t:'Sexarbeid (for eksempel prostitusjon) er arbeid på lik linje med andre yrker.', dir:1},
+
+  // ---- Techbro / Neo-luddist ----
+  {a:'tn', t:'Hvor ofte bruker du en KI-chatbot (som ChatGPT eller liknende)?', opts:[
+    {t:'Daglig', v:2},{t:'Ofte', v:1},{t:'Av og til', v:0},{t:'En gang eller to', v:-1},{t:'Aldri', v:-2}]},
+  {a:'tn', t:'Generativ KI gjør samfunnet...', opts:[
+    {t:'Mye bedre', v:2},{t:'Litt bedre', v:1},{t:'Vet ikke', v:0},{t:'Litt verre', v:-1},{t:'Mye verre', v:-2}]},
+  {a:'tn', t:'Kryptovaluta (som Bitcoin) er...', opts:[
+    {t:'Framtidens penger', v:2},{t:'Et nyttig verktøy', v:1},{t:'Vet ikke', v:0},{t:'Stort sett spekulasjon', v:-1},{t:'Helt verdiløst', v:-2}]},
+  {a:'tn', t:'Vi bør satse på mer kjernekraft.', dir:1},
+  {a:'tn', t:'Labdyrket kjøtt (kjøtt dyrket fra celler) er...', opts:[
+    {t:'En fantastisk idé vi bør ta i bruk raskt', v:2},{t:'Et gode', v:1},{t:'Vet ikke', v:0},{t:'Neppe like bra som ekte kjøtt', v:-1},{t:'Frastøtende', v:-2}]},
+  {a:'tn', t:'Jeg ville tatt et medikament som bremser eller stopper aldring.', dir:1},
+  {a:'tn', t:'KI og roboter vil utføre mesteparten av menneskers jobber innen 10 til 15 år.', dir:1},
+  {a:'tn', t:'Det er bra om KI og roboter overtar arbeidsoppgaver, slik at mennesker slipper å jobbe så mye.', dir:1},
+  {a:'tn', t:'KI-automatisering bør ikke få ødelegge folks inntekt og trygghet, selv om den effektiviserer.', dir:-1},
+  {a:'tn', t:'Menneskeheten bør redusere det totale energiforbruket sitt for å verne om naturen.', dir:-1},
+  {a:'tn', t:'Offentlig romforskning (satellitter, klimaovervåking, medisin) er verdt pengene, selv med fattigdom på jorda.', dir:1},
+  {a:'tn', t:'Milliardærenes private romkappløp er mest forfengelighet og bortkastede penger.', dir:-1},
+  {a:'tn', t:'GLP-1-medisiner (som Ozempic) er...', opts:[
+    {t:'Et medisinsk gjennombrudd', v:2},{t:'En nyttig medisin', v:1},{t:'Vet ikke', v:0},{t:'En uheldig snarvei', v:-1},{t:'Mest et problem', v:-2}]},
+  {a:'tn', t:'Genteknologi som kan fjerne arvelige sykdommer bør tas i bruk.', dir:1},
+
+  // ---- Hopepilled / Doomer ----
+  {a:'hd', t:'Det er liten vits i å planlegge framtida, for klimaendringene vil uansett ødelegge mye i løpet av få tiår.', dir:-1},
+  {a:'hd', t:'Den eneste måten å være trygg på i dagens verden er å bli rik.', dir:-1},
+  {a:'hd', t:'Jeg stoler på at etablerte nyhetsmedier stort sett forteller sannheten.', dir:1},
+  {a:'hd', t:'De beste dagene til landet mitt ligger bak oss.', dir:-1},
+  {a:'hd', t:'Sannheten om viktige historiske hendelser blir bevisst skjult for oss.', dir:-1},
+  {a:'hd', t:'Å stemme ved valg endrer egentlig ingenting.', dir:-1},
+  {a:'hd', t:'En skjult elite har en hemmelig plan om å innføre et totalitært verdensstyre.', dir:-1},
+  {a:'hd', t:'Mektige grupper (store selskaper og rikfolk) former politikken mest i sin egen interesse.', dir:-1},
+  {a:'hd', t:'Gradvise reformer er en bedre vei til endring enn krav om umiddelbar, radikal omveltning.', dir:1},
+  {a:'hd', t:'Jeg har tillit til at de som styrer landet stort sett vil samfunnets beste.', dir:1},
+  {a:'hd', t:'Å bryte loven gjennom protest eller sivil ulydighet kan være rettferdig.', dir:-1},
+  {a:'hd', t:'Barn som vokser opp i dag vil få et bedre liv enn min generasjon.', dir:1},
+  {a:'hd', t:'Jeg tror samfunnet vil løse de store problemene (som klima og ulikhet) i løpet av min levetid.', dir:1},
+  {a:'hd', t:'Å ta varer fra en butikk uten å betale (butikktyveri) er...', opts:ETIKK},
+  {a:'hd', t:'Å laste ned film, musikk eller spill ulovlig (piratkopiering) er...', opts:ETIKK},
+  {a:'hd', t:'Å snike seg på buss eller tog uten å betale er...', opts:ETIKK},
+
+  // ---- Davos / Dubai ----
+  {a:'dd', t:'Vi bør la oss inspirere av Kinas styringsmodell.', dir:-1},
+  {a:'dd', t:'Internasjonalt samarbeid (som FN og handelsavtaler) gjør verden tryggere og rikere.', dir:1},
+  {a:'dd', t:'Importtoll og handelsbarrierer trengs for å verne arbeidsplasser hjemme.', dir:-1},
+  {a:'dd', t:'Hvis jeg kunne, ville jeg omgjort et valgresultat jeg var sterkt uenig i.', dir:-1},
+  {a:'dd', t:'Frie valg og maktfordeling er viktigere enn at landet styres mest mulig effektivt.', dir:1},
+  {a:'dd', t:'En fri og kritisk presse er avgjørende, selv når den svekker dem som styrer.', dir:1},
+  {a:'dd', t:'Jeg støtter dødsstraff for de aller alvorligste forbrytelsene.', dir:-1},
+  {a:'dd', t:'Nettinnhold som strider mot mine verdier bør kunne blokkeres.', dir:-1},
+  {a:'dd', t:'Verdenssamfunnet bør kunne gripe inn når et land grovt bryter menneskerettighetene.', dir:1},
+  {a:'dd', t:'Et land bør kunne utsette egne klimakutt til det selv mener det er klart for det.', dir:-1},
+  {a:'dd', t:'Innvandrere bør ha de samme rettighetene og mulighetene som alle andre i samfunnet.', dir:1},
+  {a:'dd', t:'Kvinner bør oppmuntres (for eksempel økonomisk) til å få flere barn.', dir:-1},
+  {a:'dd', t:'Samfunnet bør gjøre det enklere å få barn (rimelig barnehage, god permisjon), uten å presse noen.', dir:1},
+  {a:'dd', t:'Menneskerettigheter betyr lite hvis du er fattig og sulten.', dir:-1}
+];
+
+function optsFor(q){ return q.opts ? q.opts : likert(q.dir); }
+
+function scoreAll(answers){
+  const res = {};
+  AXES.forEach(ax => res[ax.id] = {sum:0, max:0, n:0, answered:0});
+  Q.forEach((q,i) => {
+    const opts = optsFor(q);
+    const maxv = Math.max.apply(null, opts.map(o => Math.abs(o.v)));
+    const r = res[q.a];
+    r.max += maxv; r.n += 1;
+    const v = answers[i];
+    if (typeof v === 'number'){ r.sum += v; r.answered += 1; }
+  });
+  AXES.forEach(ax => {
+    const r = res[ax.id];
+    r.pct = r.max ? Math.round((((r.sum / r.max) + 1) / 2) * 100) : 50;
+  });
+  return res;
+}
+
+const TYPES = {
+  WTHG:{n:'Liberal teknolog-optimist', f:'Melby (V)', d:'Sosialliberal, innovasjonsvennlig og for frihandel.'},
+  WTHS:{prune:true},
+  WTDG:{n:'KI-dommedagsprofet', f:'engstelig kosmopolitt', d:'Teknologinær, men dypt urolig for hvor det bærer.'},
+  WTDS:{prune:true},
+  WNHG:{n:'Grønn idealist', f:'Hermstad (MDG)', d:'Grønn, global og løsningsorientert.'},
+  WNHS:{n:'Rødgrønn feminist', f:'Bergstø (SV)', d:'Feminisme og mangfold, økososialisme, EU-skeptisk.'},
+  WNDG:{n:'Klima-dommedagsprofet', f:'Thunberg-typen', d:'Vekstkritisk, global og dypt bekymret for klimaet.'},
+  WNDS:{n:'Antikapitalist', f:'Sneve Martinussen (R)', d:'Klassevenstre, systemkritisk og anti-EU.'},
+  CTHG:{n:'Atlantisk konservativ', f:'Søreide, Solberg (H)', d:'Markedsvennlig, atlantisk og verdimoderat.'},
+  CTHS:{n:'Nasjonalkonservativ pragmatiker', f:'Frp regjeringsfløy', d:'Verdikonservativ og produktivist, men lojal til systemet.'},
+  CTDG:{prune:true},
+  CTDS:{n:'Techno-nasjonalist', f:'Listhaug (Frp), Musk', d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.'},
+  CNHG:{n:'Kristendemokrat', f:'Ulstein (KrF)', d:'Tradisjonelle verdier, men raus på bistand og flyktninger.'},
+  CNHS:{n:'Sentrum-suverenist', f:'Vedum (Sp)', d:'Distrikt og norske interesser, anti-EU, uten autoritær side.'},
+  CNDG:{prune:true},
+  CNDS:{n:'Declinistisk nasjonalist', f:'«beste dagene bak oss»', d:'Tradisjonell og nasjonal, overbevist om at det går nedover.'}
+};
+
+function typeResult(res){
+  const ax = {wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
+  const code = (ax.wc>=50?'W':'C')+(ax.tn>=50?'T':'N')+(ax.hd>=50?'H':'D')+(ax.dd>=50?'G':'S');
+  const cornerOf = c => ({wc:c[0]==='W'?100:0, tn:c[1]==='T'?100:0, hd:c[2]==='H'?100:0, dd:c[3]==='G'?100:0});
+  let named=null, bestD=Infinity;
+  Object.keys(TYPES).forEach(c => {
+    if (TYPES[c].prune) return;
+    const p = cornerOf(c);
+    const d = Math.hypot(ax.wc-p.wc, ax.tn-p.tn, ax.hd-p.hd, ax.dd-p.dd);
+    if (d < bestD){ bestD = d; named = c; }
+  });
+  const cc = v => v>=50 ? 100-v : v;
+  const ownDist = Math.hypot(cc(ax.wc), cc(ax.tn), cc(ax.hd), cc(ax.dd));
+  return { code, rare: !!(TYPES[code] && TYPES[code].prune), named, clarity: Math.round((1-ownDist/100)*100) };
+}
+</script>
+
+<!-- UI-LOGIKK -->
+<script>
+const answers = new Array(Q.length).fill(null);
+let step = 0;
+const steps = AXES.map(ax => ({ ax, idx: Q.map((q,i)=>i).filter(i => Q[i].a === ax.id) }));
+
+function start(){
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render();
+  window.scrollTo(0,0);
+}
+
+function render(){
+  const s = steps[step];
+  document.documentElement.style.setProperty('--accent', s.ax.color);
+  document.getElementById('secTitle').textContent = s.ax.title;
+  const pill = document.getElementById('secPill');
+  pill.textContent = s.ax.left + ' / ' + s.ax.right;
+  pill.style.background = s.ax.color;
+
+  const card = document.getElementById('qcard');
+  card.innerHTML = '';
+  s.idx.forEach(i => {
+    const q = Q[i];
+    const wrap = document.createElement('div'); wrap.className = 'q';
+    const t = document.createElement('p'); t.className = 'qt'; t.textContent = q.t;
+    wrap.appendChild(t);
+    const ob = document.createElement('div'); ob.className = 'opts';
+    optsFor(q).forEach(o => {
+      const lab = document.createElement('label'); lab.className = 'opt' + (answers[i] === o.v ? ' sel' : '');
+      const inp = document.createElement('input');
+      inp.type = 'radio'; inp.name = 'q'+i; inp.value = o.v;
+      if (answers[i] === o.v) inp.checked = true;
+      inp.onchange = () => { answers[i] = o.v; render(); updateProgress(); };
+      lab.appendChild(inp);
+      const sp = document.createElement('span'); sp.textContent = o.t;
+      lab.appendChild(sp);
+      ob.appendChild(lab);
+    });
+    wrap.appendChild(ob);
+    card.appendChild(wrap);
+  });
+
+  document.getElementById('prevBtn').style.visibility = step === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = step === steps.length - 1 ? 'Se resultatet' : 'Neste';
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = answers.filter(a => a !== null).length;
+  document.getElementById('pcount').textContent = 'Besvart: ' + done + ' / ' + Q.length;
+  document.getElementById('pfill').style.width = (done / Q.length * 100) + '%';
+}
+
+function go(dir){
+  if (dir > 0 && step === steps.length - 1){ showResults(); return; }
+  step = Math.max(0, Math.min(steps.length - 1, step + dir));
+  render(); window.scrollTo(0,0);
+}
+
+function showResults(){
+  const res = scoreAll(answers);
+  const card = document.getElementById('resCard');
+  card.innerHTML = '';
+
+  const tr = typeResult(res);
+  const shown = tr.rare ? tr.named : tr.code;
+  const ty = TYPES[shown];
+  const tcard = document.createElement('div'); tcard.className = 'tcard';
+  tcard.innerHTML =
+    (tr.rare ? '<div class="trare">Koden din <b>'+tr.code+'</b> er en sjelden kombinasjon. Nærmeste vanlige type:</div>' : '') +
+    '<div class="trow"><span class="tcode">'+shown+'</span>'+
+    '<div><div class="tname">'+ty.n+'</div><div class="tfig">'+ty.f+'</div></div></div>'+
+    '<div class="tdesc">'+ty.d+'</div>'+
+    '<div class="tclar">Tydelighet '+tr.clarity+' prosent (hvor rendyrket profilen din er)</div>';
+  card.appendChild(tcard);
+
+  AXES.forEach(ax => {
+    const r = res[ax.id];
+    const pct = r.pct;
+    const block = document.createElement('div'); block.className = 'axis';
+    const verdict = pct >= 62 ? ax.descLeft : (pct <= 38 ? ax.descRight : ax.descMid);
+    const sideLabel = pct >= 55 ? ax.left : (pct <= 45 ? ax.right : 'Midt imellom');
+    block.innerHTML =
+      '<div class="ends"><span style="color:'+ax.color+'">'+ax.left+'</span>'+
+      '<span class="muted">'+ax.title+'</span>'+
+      '<span style="color:'+ax.color+'">'+ax.right+'</span></div>'+
+      '<div class="track"><div class="mid"></div>'+
+      '<div class="mark" style="left:'+pct+'%;background:'+ax.color+'"></div></div>'+
+      '<div class="verdict"><b>'+sideLabel+'</b> &middot; '+verdict+
+      ' <span class="muted small">('+pct+'/100 mot '+ax.left+')</span></div>'+
+      '<details><summary>Faglig kobling</summary><p>'+ax.faglig+'</p></details>';
+    card.appendChild(block);
+  });
+  const note = document.createElement('div'); note.className = 'disc'; note.style.marginTop = '14px';
+  note.innerHTML = 'Husk: dette er ikke en validert måling. Ledende spørsmål, ujevne svaralternativer og sosial ønskverdighet gjør at resultatet bør leses som et utgangspunkt for samtale, ikke en fasit. (I psykologi er nettopp dette et godt eksempel på lav validitet og reliabilitet.)';
+  card.appendChild(note);
+
+  const det = document.createElement('details'); det.style.marginTop = '12px';
+  det.innerHTML = '<summary>Se alle typene</summary>';
+  const tl = document.createElement('div'); tl.className = 'tlist';
+  ['WTHG','WNHG','WNHS','WNDG','WNDS','CTHG','CTHS','CTDS','CNHG','CNHS','CNDS','WTDG'].forEach(c => {
+    const t = TYPES[c];
+    const row = document.createElement('div'); row.className = 'trowmini' + (c === shown ? ' on' : '');
+    row.innerHTML = '<span class="tmini">'+c+'</span><span>'+t.n+' <span class="muted small">'+t.f+'</span></span>';
+    tl.appendChild(row);
+  });
+  det.appendChild(tl);
+  card.appendChild(det);
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
