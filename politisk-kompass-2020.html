@@ -274,37 +274,29 @@ function scoreAll(answers){
 
 const TYPES = {
   WTHG:{n:'Liberal teknolog-optimist', f:'Melby (V)', d:'Sosialliberal, innovasjonsvennlig og for frihandel.'},
-  WTHS:{prune:true},
+  WTHS:{n:'Industripatriot', f:'AP-venstre, LO, «Nei til EU»', d:'Sosialdemokratisk progressiv og industrioptimist, men EU-skeptisk og for nasjonal kontroll.'},
   WTDG:{n:'KI-dommedagsprofet', f:'engstelig kosmopolitt', d:'Teknologinær, men dypt urolig for hvor det bærer.'},
-  WTDS:{prune:true},
+  WTDS:{n:'Krypto-anarkist', f:'e/acc, «Network State»', d:'Progressiv og teknofrelst, men har mistet troen på institusjonene og vil ut av systemet.'},
   WNHG:{n:'Grønn idealist', f:'Hermstad (MDG)', d:'Grønn, global og løsningsorientert.'},
   WNHS:{n:'Rødgrønn feminist', f:'Bergstø (SV)', d:'Feminisme og mangfold, økososialisme, EU-skeptisk.'},
   WNDG:{n:'Klima-dommedagsprofet', f:'Thunberg-typen', d:'Vekstkritisk, global og dypt bekymret for klimaet.'},
   WNDS:{n:'Antikapitalist', f:'Sneve Martinussen (R)', d:'Klassevenstre, systemkritisk og anti-EU.'},
   CTHG:{n:'Atlantisk konservativ', f:'Søreide, Solberg (H)', d:'Markedsvennlig, atlantisk og verdimoderat.'},
   CTHS:{n:'Nasjonalkonservativ pragmatiker', f:'Frp regjeringsfløy', d:'Verdikonservativ og produktivist, men lojal til systemet.'},
-  CTDG:{prune:true},
+  CTDG:{n:'Luksuskommunist', f:'Bastani, FALC', d:'Klassevenstre og akselerasjonist: automasjon skal frigjøre fra arbeid. Avviser identitetspolitikk.'},
   CTDS:{n:'Techno-nasjonalist', f:'Listhaug (Frp), Musk', d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.'},
   CNHG:{n:'Kristendemokrat', f:'Ulstein (KrF)', d:'Tradisjonelle verdier, men raus på bistand og flyktninger.'},
   CNHS:{n:'Sentrum-suverenist', f:'Vedum (Sp)', d:'Distrikt og norske interesser, anti-EU, uten autoritær side.'},
-  CNDG:{prune:true},
+  CNDG:{n:'Øko-primitivist', f:'degrowth-venstre', d:'Klasse og økologi først, dypt teknologifiendtlig og systemkritisk.'},
   CNDS:{n:'Declinistisk nasjonalist', f:'«beste dagene bak oss»', d:'Tradisjonell og nasjonal, overbevist om at det går nedover.'}
 };
 
 function typeResult(res){
   const ax = {wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
   const code = (ax.wc>=50?'W':'C')+(ax.tn>=50?'T':'N')+(ax.hd>=50?'H':'D')+(ax.dd>=50?'G':'S');
-  const cornerOf = c => ({wc:c[0]==='W'?100:0, tn:c[1]==='T'?100:0, hd:c[2]==='H'?100:0, dd:c[3]==='G'?100:0});
-  let named=null, bestD=Infinity;
-  Object.keys(TYPES).forEach(c => {
-    if (TYPES[c].prune) return;
-    const p = cornerOf(c);
-    const d = Math.hypot(ax.wc-p.wc, ax.tn-p.tn, ax.hd-p.hd, ax.dd-p.dd);
-    if (d < bestD){ bestD = d; named = c; }
-  });
   const cc = v => v>=50 ? 100-v : v;
   const ownDist = Math.hypot(cc(ax.wc), cc(ax.tn), cc(ax.hd), cc(ax.dd));
-  return { code, rare: !!(TYPES[code] && TYPES[code].prune), named, clarity: Math.round((1-ownDist/100)*100) };
+  return { code, clarity: Math.round((1-ownDist/100)*100) };
 }
 </script>
 
@@ -375,11 +367,10 @@ function showResults(){
   card.innerHTML = '';
 
   const tr = typeResult(res);
-  const shown = tr.rare ? tr.named : tr.code;
+  const shown = tr.code;
   const ty = TYPES[shown];
   const tcard = document.createElement('div'); tcard.className = 'tcard';
   tcard.innerHTML =
-    (tr.rare ? '<div class="trare">Koden din <b>'+tr.code+'</b> er en sjelden kombinasjon. Nærmeste vanlige type:</div>' : '') +
     '<div class="trow"><span class="tcode">'+shown+'</span>'+
     '<div><div class="tname">'+ty.n+'</div><div class="tfig">'+ty.f+'</div></div></div>'+
     '<div class="tdesc">'+ty.d+'</div>'+
@@ -410,7 +401,7 @@ function showResults(){
   const det = document.createElement('details'); det.style.marginTop = '12px';
   det.innerHTML = '<summary>Se alle typene</summary>';
   const tl = document.createElement('div'); tl.className = 'tlist';
-  ['WTHG','WNHG','WNHS','WNDG','WNDS','CTHG','CTHS','CTDS','CNHG','CNHS','CNDS','WTDG'].forEach(c => {
+  ['WTHG','WTHS','WTDG','WTDS','WNHG','WNHS','WNDG','WNDS','CTHG','CTHS','CTDG','CTDS','CNHG','CNHS','CNDG','CNDS'].forEach(c => {
     const t = TYPES[c];
     const row = document.createElement('div'); row.className = 'trowmini' + (c === shown ? ' on' : '');
     row.innerHTML = '<span class="tmini">'+c+'</span><span>'+t.n+' <span class="muted small">'+t.f+'</span></span>';
