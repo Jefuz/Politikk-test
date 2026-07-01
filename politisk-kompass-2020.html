@@ -8,7 +8,7 @@
   :root{
     --bg:#f6f7fb; --card:#ffffff; --ink:#1c2333; --muted:#5b6478;
     --line:#e4e7ef; --accent:#3f51b5;
-    --wc:#7c3aed; --tn:#0891b2; --hd:#16a34a; --dd:#ea580c;
+    --wc:#7c3aed; --tn:#0891b2; --hd:#16a34a; --dd:#ea580c; --op:#9d174d;
     --shadow:0 1px 3px rgba(20,30,60,.08),0 8px 24px rgba(20,30,60,.06);
   }
   *{box-sizing:border-box}
@@ -98,17 +98,18 @@
     <h1>Det nye politiske kartet</h1>
     <p class="sub">Den gamle venstre/høyre-aksen fanger stadig mindre av hva folk faktisk krangler om. Testen kartlegger fire nyere dimensjoner og plasserer deg i én av 16 profiler.</p>
     <div class="card" style="margin-top:18px">
-      <p>Testen prøver fire nyere akser:</p>
+      <p>Testen prøver fem akser:</p>
       <p style="margin:14px 0 4px"><b style="color:var(--wc)">Woke ↔ Chud</b> &nbsp;Identitet, kjønn og kultur.<br>
       <b style="color:var(--tn)">Techbro ↔ Neo-luddist</b> &nbsp;Teknologi, KI og framtid.<br>
       <b style="color:var(--hd)">Hopepilled ↔ Doomer</b> &nbsp;Tillit til systemet og til framtida.<br>
-      <b style="color:var(--dd)">Davos ↔ Dubai</b> &nbsp;Globalisme mot nasjonalisme, og styreform.</p>
+      <b style="color:var(--dd)">Davos ↔ Dubai</b> &nbsp;Globalisme mot nasjonalisme, og styreform.<br>
+      <b style="color:var(--op)">Offentlig ↔ Privat</b> &nbsp;Stat og marked, skatt og eierskap.</p>
       <div class="disc" style="margin-top:16px">
         Dette er et <b>diskusjonsverktøy</b>, ikke en vitenskapelig test. Det finnes ingen riktige svar, og resultatet sier mer om hvordan spørsmål er formulert enn om hvem du «er». Det er en del av poenget: i timen skal vi også kritisere selve testen.
       </div>
       <div class="row" style="margin-top:18px">
         <button class="btn" onclick="start()">Start testen</button>
-        <span class="muted small">57 spørsmål, omtrent 9 minutter.</span>
+        <span class="muted small">72 spørsmål, omtrent 11 minutter.</span>
       </div>
     </div>
     <details style="margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:#fbfcff">
@@ -139,6 +140,9 @@
     <h1>Din profil</h1>
     <p class="sub no-print">Husk at dette er et samtaleverktøy. Bruk diskusjonsspørsmålene nederst.</p>
     <div class="card" style="margin-top:16px" id="resCard"></div>
+    <div style="margin-top:8px;text-align:right" class="no-print">
+      <button class="btn ghost" onclick="copyResultLink(this)">Del disse resultatene</button>
+    </div>
 
     <div class="card" style="margin-top:16px">
       <h2 style="margin-bottom:8px">Diskusjonsspørsmål</h2>
@@ -183,7 +187,12 @@ const AXES = [
     descLeft:'Du foretrekker internasjonalt samarbeid, frie valg og sterke menneskerettigheter.',
     descMid:'Du veier globalt samarbeid og nasjonal kontroll mot hverandre.',
     descRight:'Du vektlegger nasjonal kontroll og effektiv styring, om nødvendig på bekostning av demokratiske former.',
-    faglig:'Aksen kombinerer globalisme mot nasjonalisme med demokratisk mot autoritær styreform. Den er sentral i PoMe: makt, styreformer, menneskerettigheter og internasjonalt samarbeid.' }
+    faglig:'Aksen kombinerer globalisme mot nasjonalisme med demokratisk mot autoritær styreform. Den er sentral i PoMe: makt, styreformer, menneskerettigheter og internasjonalt samarbeid.' },
+  { id:'op', left:'Offentlig', right:'Privat', title:'Stat og marked', color:'#9d174d',
+    descLeft:'Du vil ha en sterk stat, høy omfordeling og offentlig eierskap i velferd og ressurser.',
+    descMid:'Du kombinerer markedsøkonomi med en sterk velferdsstat – typisk nordisk sentrumsposisjon.',
+    descRight:'Du stoler mer på markedet enn staten som fordeler av ressurser, og vil ha lavere skatter og mer privat initiativ.',
+    faglig:'Aksen tilsvarer den sosiøkonomiske dimensjonen i statsvitenskapelig partiforskning – den klassiske skillelinjen mellom kapitaleiere og lønnsmottakere. Esping-Andersens begrep om dekommodifisering (i hvilken grad velferdsstaten frikobler borgerne fra markedet) er sentralt. NPM-debatten – om markedsmekanismer forbedrer offentlige tjenester – er en nyere variant av den samme konflikten. Merk at norsk særegenhet (oljefondet, statlig eierskap, trepartssamarbeidet) gjør at høyre/venstre-plasseringene på denne aksen ikke alltid samsvarer med internasjonale mønstre.' }
 ];
 
 const LIKERT = ["Helt enig","Delvis enig","Verken enig eller uenig","Delvis uenig","Helt uenig"];
@@ -266,7 +275,24 @@ const Q = [
   {a:'dd', t:'Innvandrere bør ha de samme rettighetene og mulighetene som alle andre i samfunnet.', dir:1},
   {a:'dd', t:'Kvinner bør oppmuntres (for eksempel økonomisk) til å få flere barn.', dir:-1},
   {a:'dd', t:'Samfunnet bør gjøre det enklere å få barn (rimelig barnehage, god permisjon), uten å presse noen.', dir:1},
-  {a:'dd', t:'Menneskerettigheter betyr lite hvis du er fattig og sulten.', dir:-1}
+  {a:'dd', t:'Menneskerettigheter betyr lite hvis du er fattig og sulten.', dir:-1},
+
+  // ---- Offentlig / Privat ----
+  {a:'op', t:'Formuesskatt på aksjer og fast eiendom bør beholdes eller heves.', dir:1},
+  {a:'op', t:'Arv bør skattlegges strengere for å bremse at store formuer arves videre uten å ha blitt tjent opp.', dir:1},
+  {a:'op', t:'Lavere selskapsskatt er et effektivt virkemiddel for å skape arbeidsplasser og investeringer.', dir:-1},
+  {a:'op', t:'Barnehage og SFO bør være gratis for alle barn, finansiert av fellesskapet.', dir:1},
+  {a:'op', t:'Profitt hører ikke hjemme i drift av sykehus, eldreomsorg eller grunnskole.', dir:1},
+  {a:'op', t:'Konkurranse mellom offentlige og private tilbydere gjør velferdstjenestene bedre.', dir:-1},
+  {a:'op', t:'Staten bør beholde og utvide sitt eierskap i norske energi- og ressursselskaper.', dir:1},
+  {a:'op', t:'Kraftprisene bør reguleres politisk for å beskytte forbrukerne, ikke styres av markedet alene.', dir:1},
+  {a:'op', t:'Fagforeninger og tariffavtaler er avgjørende for å hindre at lønnsnivået presses ned.', dir:1},
+  {a:'op', t:'Bønder bør motta statsstøtte for å sikre norsk matproduksjon, selv om det gjør maten dyrere.', dir:1},
+  {a:'op', t:'Kommuner bør kunne innføre husleieregulering for å hindre at folk presses ut av sentrumsområder.', dir:1},
+  {a:'op', t:'Friskoler og private høyskoler er et gode for de som ønsker en annen pedagogikk eller profil.', dir:-1},
+  {a:'op', t:'Det er mer rettferdig å målrette velferdsstønader mot dem som trenger det mest, enn å gi likt til alle.', dir:-1},
+  {a:'op', t:'Markedet er generelt bedre enn staten til å fordele ressurser og skape effektivitet i samfunnet.', dir:-1},
+  {a:'op', t:'Mer bruk av anbud og konkurranseutsetting gjør offentlig finansierte tjenester mer effektive og rimelige.', dir:-1}
 ];
 
 function optsFor(q){ return q.opts ? q.opts : likert(q.dir); }
@@ -290,22 +316,54 @@ function scoreAll(answers){
 }
 
 const TYPES = {
-  WTHG:{n:'Liberal teknolog-optimist', figures:['Melby (V)','Astrup (H)','Macron','Abid Raja (V)'], d:'Sosialliberal, innovasjonsvennlig og for frihandel.'},
-  WTHS:{n:'Industripatriot', figures:['Støre (Ap)','LO-venstre','Biden','Tajik (Ap)'], d:'Sosialdemokratisk progressiv og industrioptimist, men EU-skeptisk og for nasjonal kontroll.'},
-  WTDG:{n:'KI-dommedagsprofet', figures:['Sam Altman','Nick Bostrom','engstelig kosmopolitt'], d:'Teknologinær, men dypt urolig for hvor det bærer.'},
-  WTDS:{n:'Krypto-anarkist', figures:['e/acc','Bukele','Balaji','«Network State»'], d:'Progressiv og teknofrelst, men har mistet troen på institusjonene og vil ut av systemet.'},
-  WNHG:{n:'Grønn idealist', figures:['Hermstad (MDG)','Lysbakken (SV)','Kamala Harris'], d:'Grønn, global og løsningsorientert.'},
-  WNHS:{n:'Rødgrønn feminist', figures:['Bergstø (SV)','Martinussen (R)','Bernie Sanders'], d:'Feminisme og mangfold, økososialisme, EU-skeptisk.'},
-  WNDG:{n:'Klima-dommedagsprofet', figures:['Thunberg','Lan Marie Berg (MDG)','Extinction Rebellion'], d:'Vekstkritisk, global og dypt bekymret for klimaet.'},
-  WNDS:{n:'Antikapitalist', figures:['Sneve Martinussen (R)','Hasan Piker','zapatistene'], d:'Klassevenstre, systemkritisk og anti-EU.'},
-  CTHG:{n:'Atlantisk konservativ', figures:['Søreide (H)','Solberg (H)','Macron','Merkel'], d:'Markedsvennlig, atlantisk og verdimoderat.'},
-  CTHS:{n:'Nasjonalkonservativ pragmatiker', figures:['Frp regjeringsfløy','Jensen (Frp)','Orbán','Meloni'], d:'Verdikonservativ og produktivist, men lojal til systemet.'},
-  CTDG:{n:'Luksuskommunist', figures:['Bastani','FALC-bevegelsen','Peter Thiel (vridning)'], d:'Klassevenstre og akselerasjonist: automasjon skal frigjøre fra arbeid. Avviser identitetspolitikk.'},
-  CTDS:{n:'Techno-nasjonalist', figures:['Listhaug (Frp)','Elon Musk','Vivek Ramaswamy','MAGA-tech'], d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.'},
-  CNHG:{n:'Kristendemokrat', figures:['Ulstein (KrF)','Bollestad (KrF)','Pete Buttigieg'], d:'Tradisjonelle verdier, men raus på bistand og flyktninger.'},
-  CNHS:{n:'Sentrum-suverenist', figures:['Vedum (Sp)','Pollestad (Sp)','Marine Le Pen (moderat)'], d:'Distrikt og norske interesser, anti-EU, uten autoritær side.'},
-  CNDG:{n:'Øko-primitivist', figures:['degrowth-venstre','Jason Hickel','Serge Latouche'], d:'Klasse og økologi først, dypt teknologifiendtlig og systemkritisk.'},
-  CNDS:{n:'Declinistisk nasjonalist', figures:['Trump','Orbán','Putin','Hege Storhaug'], d:'Tradisjonell og nasjonal, overbevist om at det går nedover.'}
+  WTHG:{n:'Liberal teknolog-optimist', figures:['Melby (V)','Astrup (H)','Macron','Abid Raja (V)'], d:'Sosialliberal, innovasjonsvennlig og for frihandel.',
+    q:['Er det mulig å kombinere teknologisk optimisme med bærekraft, eller er vekst og klima grunnleggende i konflikt?',
+       'Du er progressiv og støtter markedet. Finnes det spenninger mellom disse to – og når vil de bli synlige?']},
+  WTHS:{n:'Industripatriot', figures:['Støre (Ap)','LO-venstre','Biden','Tajik (Ap)'], d:'Sosialdemokratisk progressiv og industrioptimist, men EU-skeptisk og for nasjonal kontroll.',
+    q:['Kan et land beskytte sine egne arbeidsplasser og industri uten at andre land mister noe? Hvem vinner og taper?',
+       'Du er sosialdemokrat, men EU-skeptisk. Svekker det norsk arbeidervern å stå utenfor EU?']},
+  WTDG:{n:'KI-dommedagsprofet', figures:['Sam Altman','Nick Bostrom','engstelig kosmopolitt'], d:'Teknologinær, men dypt urolig for hvor det bærer.',
+    q:['Du er bekymret for KI, men ikke nødvendigvis imot teknologi. Hva er grensen mellom sunn varsomhet og irrasjonell frykt?',
+       'Hvem bør bestemme tempoet i KI-utviklingen – forskerfellesskapet, markedet, demokratiene, eller en annen instans?']},
+  WTDS:{n:'Krypto-anarkist', figures:['e/acc','Bukele','Balaji','«Network State»'], d:'Progressiv og teknofrelst, men har mistet troen på institusjonene og vil ut av systemet.',
+    q:['Dersom alle fellesinstitusjoner ble svekket til fordel for teknologiske alternativer – hvem ville beskytte dem uten makt eller ressurser?',
+       'Er det mulig å ha et rettferdig samfunn uten forpliktende kollektive institusjoner?']},
+  WNHG:{n:'Grønn idealist', figures:['Hermstad (MDG)','Lysbakken (SV)','Kamala Harris'], d:'Grønn, global og løsningsorientert.',
+    q:['Klimatiltak krever ofte ofre her og nå for gevinst langt frem i tid. Hvem bør betale mest – og etter hvilken logikk?',
+       'Kan internasjonalt samarbeid løse klimakrisen, eller krever det faktisk tvang og innskrenket frihet?']},
+  WNHS:{n:'Rødgrønn feminist', figures:['Bergstø (SV)','Martinussen (R)','Bernie Sanders'], d:'Feminisme og mangfold, økososialisme, EU-skeptisk.',
+    q:['Kan feminisme og klassekamp forenes uten spenninger, eller konkurrerer de noen ganger om prioriteringer?',
+       'Du er EU-skeptisk og solidarisk. Er ikke internasjonal solidaritet lettere å praktisere innenfor sterke overnasjonale strukturer?']},
+  WNDG:{n:'Klima-dommedagsprofet', figures:['Thunberg','Lan Marie Berg (MDG)','Extinction Rebellion'], d:'Vekstkritisk, global og dypt bekymret for klimaet.',
+    q:['Dersom politikere ikke handler raskt nok på klima, er sivil ulydighet moralsk berettiget? Hvor går grensen?',
+       'Vekstkritikk er global, men norsk levestandard er blant verdens høyeste. Er det mulig å kreve av andre det vi ikke gjør selv?']},
+  WNDS:{n:'Antikapitalist', figures:['Sneve Martinussen (R)','Hasan Piker','zapatistene'], d:'Klassevenstre, systemkritisk og anti-EU.',
+    q:['Kan kapitalismen reformeres innenfra, eller krever reell endring et systemskifte? Hva er forskjellen på de to?',
+       'Du er systemkritisk og anti-EU. Hva vil du erstatte systemet med – og hvem bestemmer overgangen?']},
+  CTHG:{n:'Atlantisk konservativ', figures:['Søreide (H)','Solberg (H)','Macron','Merkel'], d:'Markedsvennlig, atlantisk og verdimoderat.',
+    q:['Markedet løser mange problemer – men ikke alle. Hva bør marked og stat gjøre henholdsvis?',
+       'Du er trygg på NATO og Vesten. Hva skjer med denne tryggheten dersom USA trekker seg tilbake fra forpliktelsene sine?']},
+  CTHS:{n:'Nasjonalkonservativ pragmatiker', figures:['Frp regjeringsfløy','Jensen (Frp)','Orbán','Meloni'], d:'Verdikonservativ og produktivist, men lojal til systemet.',
+    q:['Du vektlegger nasjonal kontroll og tradisjonelle verdier. Når kommer de i konflikt med hverandre?',
+       'Hva skiller en nasjonalkonservativ fra en høyrepopulist? Er skillet mer et spørsmål om stil enn substans?']},
+  CTDG:{n:'Luksuskommunist', figures:['Bastani','FALC-bevegelsen','Nick Bostrom (vridning)'], d:'Klassevenstre og akselerasjonist: automasjon skal frigjøre fra arbeid. Avviser identitetspolitikk.',
+    q:['Dersom roboter tar over arbeidet og alle får grunnleggende inntekt – hva gir folk mening og tilhørighet?',
+       'Du avviser identitetspolitikk til fordel for klasse. Er ikke kjønn og etnisitet faktisk viktige forklaringer på maktforskjeller?']},
+  CTDS:{n:'Techno-nasjonalist', figures:['Listhaug (Frp)','Elon Musk','Vivek Ramaswamy','MAGA-tech'], d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.',
+    q:['Du er anti-elite og pro-teknologi. Er ikke tech-milliardærer en ny elite – og hva gjør det med argumentet ditt?',
+       'Nasjonalisme og teknologisk akselerasjon kan stå i konflikt: teknologien er global. Hvordan løser du det?']},
+  CNHG:{n:'Kristendemokrat', figures:['Ulstein (KrF)','Bollestad (KrF)','Pete Buttigieg'], d:'Tradisjonelle verdier, men raus på bistand og flyktninger.',
+    q:['Kristendemokrati kombinerer tradisjonelle verdier med global solidaritet. Hva skjer når disse to kommer i konflikt?',
+       'Hva bør religion ha å si i politikken? Trekk grensen mellom verdier som argument og tro som tvang.']},
+  CNHS:{n:'Sentrum-suverenist', figures:['Vedum (Sp)','Pollestad (Sp)','Marine Le Pen (moderat)'], d:'Distrikt og norske interesser, anti-EU, uten autoritær side.',
+    q:['Mange som er kritiske til EU, er likevel for internasjonalt samarbeid. Hva er egentlig forskjellen?',
+       'Distriktspolitikk koster penger og kan gå på bekostning av byene. Hvem bør subsidiere hvem – og etter hvilken logikk?']},
+  CNDG:{n:'Øko-primitivist', figures:['degrowth-venstre','Jason Hickel','Serge Latouche'], d:'Klasse og økologi først, dypt teknologifiendtlig og systemkritisk.',
+    q:['Degrowth betyr lavere materiell levestandard for mange. Hvem er villig til å betale den prisen – og hvem bestemmer?',
+       'Du er teknologifiendtlig. Er ikke medisin, rent vann og kommunikasjonsteknologi goder vi ikke vil gi opp?']},
+  CNDS:{n:'Declinistisk nasjonalist', figures:['Trump','Orbán','Putin','Hege Storhaug'], d:'Tradisjonell og nasjonal, overbevist om at det går nedover.',
+    q:['«Tilbake til en bedre tid» – men bedre for hvem? Hvem hadde det dårligere i den tida du tenker på?',
+       'Du er overbevist om nedgang. Hva ville overbevise deg om at du tar feil?']}
 };
 
 function typeResult(res){
@@ -348,7 +406,7 @@ const POLITICIANS = [
   {n:'Nick Bostrom', role:'Filosof og AI-forsker, Oxford', d:'Svensk-britisk tenker som advarer mot eksistensiell AI-risiko – tech-nær, kosmopolitt og dypt urolig for sivilisasjonens retning.', s:{wc:25,tn:75,hd:32,dd:70}},
   // CTDS
   {n:'Elon Musk', role:'CEO, Tesla / SpaceX / X', d:'Anti-woke tech-milliardær som bygger imperier og utfordrer det politiske etablissementet.', s:{wc:15,tn:88,hd:38,dd:42}},
-  {n:'Sylvi Listhaug', role:'Leder, Frp', d:'Folkepopulistisk høyrekonservativ med sterk anti-elite-retorikk og nasjonal profil.', s:{wc:18,tn:52,hd:40,dd:28}},
+  {n:'Sylvi Listhaug', role:'Leder, Frp', d:'Folkepopulistisk høyrekonservativ med sterk anti-elite-retorikk og nasjonal profil.', s:{wc:18,tn:46,hd:40,dd:28}},
   // CNHG
   {n:'Olaug Bollestad', role:'Leder, KrF', d:'Kristendemokrat med tradisjonelle verdier, men raus holdning til bistand og flyktninger.', s:{wc:30,tn:36,hd:68,dd:65}},
   // CNHS
@@ -357,7 +415,7 @@ const POLITICIANS = [
   // CNDG
   {n:'Jason Hickel', role:'Økonom og degrowth-teoretiker', d:'Akademiker som mener kapitalisme og teknologisk vekst er uforenlig med et levelig klima.', s:{wc:42,tn:22,hd:32,dd:65}},
   // CNDS
-  {n:'Donald Trump', role:'President, USA', d:'Populistisk nasjonalist med sterk skepsis til globale institusjoner og «woke» kultureliter.', s:{wc:8,tn:52,hd:28,dd:12}},
+  {n:'Donald Trump', role:'President, USA', d:'Populistisk nasjonalist med sterk skepsis til globale institusjoner og «woke» kultureliter.', s:{wc:8,tn:46,hd:28,dd:12}},
   {n:'Vladimir Putin', role:'President, Russland', d:'Autoritær nasjonalist med tradisjonelle verdier og dyp mistro til Vesten.', s:{wc:12,tn:38,hd:35,dd:16}},
 ];
 
@@ -472,10 +530,48 @@ function go(dir){
   render(); window.scrollTo(0,0);
 }
 
-function showResults(){
-  const res = scoreAll(answers);
+function makeMap(cfg, res){
+  const {xId,yId,xLeft,xRight,yTop,yBot,title,typePos} = cfg;
+  const NX = res[xId].pct/100, NY = 1-res[yId].pct/100;
+  const W=256, H=192, cW=W/4, cH=H/4;
+  const ux = NX*W, uy = NY*H;
+  const p = [];
+  [[0,0,'#eff2ff'],[1,0,'#f5f0fe'],[0,1,'#f0fdf4'],[1,1,'#fff8f0']].forEach(([qx,qy,col])=>{
+    p.push(`<rect x="${qx*2*cW}" y="${qy*2*cH}" width="${2*cW}" height="${2*cH}" fill="${col}"/>`);
+  });
+  p.push(`<line x1="${2*cW}" y1="0" x2="${2*cW}" y2="${H}" stroke="#c7d0e8" stroke-width="1.5"/>`);
+  p.push(`<line x1="0" y1="${2*cH}" x2="${W}" y2="${2*cH}" stroke="#c7d0e8" stroke-width="1.5"/>`);
+  p.push(`<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#c7d0e8" stroke-width="1.2" rx="4"/>`);
+  Object.keys(typePos).forEach(code=>{
+    const [gx,gy]=typePos[code];
+    const cx=gx*cW+cW/2, cy=gy*cH+cH/2, r=Math.min(cW,cH)*0.33;
+    p.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#818cf8" fill-opacity="0.12" stroke="#818cf8" stroke-opacity="0.3" stroke-width="0.7"/>`);
+    p.push(`<text x="${cx}" y="${cy+0.5}" text-anchor="middle" dominant-baseline="middle" font-size="5" fill="#4338ca" font-family="ui-monospace,monospace" font-weight="600">${code}</text>`);
+  });
+  p.push(`<circle cx="${ux}" cy="${uy}" r="8" fill="#1d4ed8" stroke="white" stroke-width="2.5"/>`);
+  p.push(`<text x="${ux}" y="${uy+0.5}" text-anchor="middle" dominant-baseline="middle" font-size="4.8" fill="white" font-weight="700" font-family="sans-serif">DU</text>`);
+  p.push(`<text x="${W/2}" y="-4" text-anchor="middle" font-size="7" fill="#9ca3af" font-family="sans-serif">${yTop} ↑</text>`);
+  p.push(`<text x="${W/2}" y="${H+11}" text-anchor="middle" font-size="7" fill="#9ca3af" font-family="sans-serif">↓ ${yBot}</text>`);
+  const svg = `<svg viewBox="0 -14 ${W} ${H+24}" xmlns="http://www.w3.org/2000/svg" style="width:100%">${p.join('')}</svg>`;
+  return `<div><div style="font-size:.72rem;font-weight:700;color:#6366f1;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em">${title}</div>`+
+    `<div style="display:flex;justify-content:space-between;font-size:.68rem;color:#9ca3af;margin-bottom:1px"><span>← ${xLeft}</span><span>${xRight} →</span></div>`+
+    `<div style="border-radius:6px;overflow:hidden;border:1px solid #dde3f0">${svg}</div></div>`;
+}
+function copyResultLink(btn){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    btn.textContent='Kopiert!';
+    setTimeout(()=>btn.textContent='Del disse resultatene',2000);
+  }).catch(()=>{
+    btn.textContent='Kopier URL fra adressefeltet';
+    setTimeout(()=>btn.textContent='Del disse resultatene',3000);
+  });
+}
+function showResults(preRes){
+  let res = preRes || scoreAll(answers);
+  if(!res.op) res = Object.assign({}, res, {op:{pct:50}});
   const card = document.getElementById('resCard');
   card.innerHTML = '';
+  try{ history.replaceState(null,'','?wc='+res.wc.pct+'&tn='+res.tn.pct+'&hd='+res.hd.pct+'&dd='+res.dd.pct+'&op='+res.op.pct); }catch(_){}
 
   const tr = typeResult(res);
   const shown = tr.code;
@@ -485,7 +581,7 @@ function showResults(){
     '<div class="trow"><span class="tcode">'+shown+'</span>'+
     '<div><div class="tname">'+ty.n+'</div><div class="tfig">'+ty.figures.join(' · ')+'</div></div></div>'+
     '<div class="tdesc">'+ty.d+'</div>'+
-    '<div class="tclar">Tydelighet '+tr.clarity+' prosent (hvor rendyrket profilen din er)</div>';
+    '<div class="tclar">Tydelighet: '+tr.clarity+' % — 100 % = du lander i et hjørne på alle akser; 0 % = du er i midten.</div>';
   card.appendChild(tcard);
 
   AXES.forEach(ax => {
@@ -505,6 +601,14 @@ function showResults(){
       '<details><summary>Faglig kobling</summary><p>'+ax.faglig+'</p></details>';
     card.appendChild(block);
   });
+  const M1_POS = {CTHS:[0,0],CTHG:[1,0],CTDS:[0,1],CTDG:[1,1],WTHS:[2,0],WTHG:[3,0],WTDS:[2,1],WTDG:[3,1],CNHS:[0,2],CNHG:[1,2],CNDS:[0,3],CNDG:[1,3],WNHS:[2,2],WNHG:[3,2],WNDS:[2,3],WNDG:[3,3]};
+  const M2_POS = {WNDG:[0,0],WTDG:[1,0],CNDG:[0,1],CTDG:[1,1],WNHG:[2,0],WTHG:[3,0],CNHG:[2,1],CTHG:[3,1],WNDS:[0,2],WTDS:[1,2],CNDS:[0,3],CTDS:[1,3],WNHS:[2,2],WTHS:[3,2],CNHS:[2,3],CTHS:[3,3]};
+  const mwrap = document.createElement('div');
+  mwrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px';
+  mwrap.innerHTML =
+    makeMap({xId:'wc',yId:'tn',xLeft:'Chud',xRight:'Woke',yTop:'Techbro',yBot:'Neo-luddist',title:'Kultur / Teknologi',typePos:M1_POS},res)+
+    makeMap({xId:'hd',yId:'dd',xLeft:'Doomer',xRight:'Hopepilled',yTop:'Davos',yBot:'Dubai',title:'Framtidstro / Globalisme',typePos:M2_POS},res);
+  card.appendChild(mwrap);
   const match = findClosestPolitician(res);
   const pcard = document.createElement('div'); pcard.className = 'pcard';
   pcard.innerHTML =
@@ -528,6 +632,13 @@ function showResults(){
       }).catch(()=>{});
   }
 
+  if(ty.q && ty.q.length){
+    const pqCard = document.createElement('div');
+    pqCard.style.cssText = 'border:1px solid #dbeafe;border-radius:14px;padding:16px;background:#eff6ff;margin-top:12px';
+    pqCard.innerHTML = '<div style="font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#3b82f6;margin-bottom:10px">Diskusjonsspørsmål for din profil</div>'+
+      ty.q.map(q=>'<p style="font-size:.9rem;margin:0 0 8px;line-height:1.45">'+q+'</p>').join('');
+    card.appendChild(pqCard);
+  }
   const note = document.createElement('div'); note.className = 'disc'; note.style.marginTop = '14px';
   note.innerHTML = 'Husk: dette er ikke en validert måling. Ledende spørsmål, ujevne svaralternativer og sosial ønskverdighet gjør at resultatet bør leses som et utgangspunkt for samtale, ikke en fasit. (I psykologi er nettopp dette et godt eksempel på lav validitet og reliabilitet.)';
   card.appendChild(note);
@@ -561,6 +672,20 @@ function showResults(){
       '<div class="itc-desc">'+ty.d+'</div>';
     container.appendChild(card);
   });
+})();
+
+(function(){
+  const sp = new URLSearchParams(location.search);
+  if(['wc','tn','hd','dd'].every(k=>sp.has(k))){
+    const vals = {wc:+sp.get('wc'),tn:+sp.get('tn'),hd:+sp.get('hd'),dd:+sp.get('dd')};
+    if(sp.has('op') && !isNaN(+sp.get('op'))) vals.op = +sp.get('op');
+    if(Object.values(vals).every(v=>!isNaN(v)&&v>=0&&v<=100)){
+      document.getElementById('intro').style.display='none';
+      const preRes = {wc:{pct:vals.wc},tn:{pct:vals.tn},hd:{pct:vals.hd},dd:{pct:vals.dd}};
+      if(vals.op != null) preRes.op = {pct:vals.op};
+      showResults(preRes);
+    }
+  }
 })();
 </script>
 </body>
