@@ -378,96 +378,50 @@ function typeResult(res){
 }
 
 const POLITICIANS = [
-  // WTHG
-  {n:'Guri Melby', role:'Leder, Venstre', d:'Sosialliberal og teknologioptimist med sterk tro på EU og internasjonalt samarbeid.', s:{wc:68,tn:65,hd:72,dd:78}},
-  {n:'Nikolai Astrup', role:'Digitaliseringsminister (H)', d:'Høyre-liberal med sterk tro på teknologi og transatlantisk samarbeid.', s:{wc:52,tn:72,hd:70,dd:76}},
-  {n:'Emmanuel Macron', role:'President, Frankrike', d:'Sentrumspolitiker med sterk tro på Europa, markedet og teknologisk modernisering.', s:{wc:60,tn:65,hd:68,dd:84}},
-  // WTHS
-  {n:'Jonas Gahr Støre', role:'Statsminister (Ap)', d:'Sosialdemokrat med progressiv profil, men skeptisk til EU og opptatt av nasjonal industripolitikk.', s:{wc:58,tn:54,hd:68,dd:42}},
-  {n:'Joe Biden', role:'President, USA (2021–2025)', d:'Progressiv og pro-union, trygg på institusjonene – men nasjonalistisk på handel.', s:{wc:62,tn:52,hd:70,dd:38}},
-  // WTDG
-  {n:'Sam Altman', role:'CEO, OpenAI', d:'Akselererer KI-utviklingen, men er genuint urolig for hva den kan føre til.', s:{wc:58,tn:85,hd:35,dd:72}},
-  // WTDS
-  {n:'Nayib Bukele', role:'President, El Salvador', d:'Bitcoin-entusiast og teknofrelst populist som har samlet makt på bekostning av demokratiet.', s:{wc:58,tn:82,hd:30,dd:22}},
-  // WNHG
-  {n:'Audun Lysbakken', role:'Leder, SV', d:'Grønn sosialist med sterk tro på offentlig sektor og internasjonalt solidaritet.', s:{wc:76,tn:36,hd:66,dd:68}},
-  {n:'Kamala Harris', role:'Visepresident, USA (2021–2025)', d:'Progressiv og institusjonslojal, tror på systemet og internasjonalt samarbeid.', s:{wc:70,tn:45,hd:62,dd:68}},
-  // WNHS
-  {n:'Marie Sneve Martinussen', role:'Leder, Rødt', d:'Klassevenstrepolitiker, feminist og systemkritiker – men innenfor parlamentariske rammer.', s:{wc:80,tn:32,hd:58,dd:38}},
-  {n:'Bernie Sanders', role:'Senator, USA', d:'Sosialdemokrat med dyp skepsis til Wall Street og ønske om nasjonal velferdsstat.', s:{wc:68,tn:38,hd:62,dd:35}},
-  // WNDG
-  {n:'Greta Thunberg', role:'Klimaaktivist, Sverige', d:'Radikal klimaforkjemper: systemkritisk, vekstkritisk og pessimistisk om politikernes vilje.', s:{wc:82,tn:20,hd:28,dd:68}},
-  {n:'Lan Marie Berg', role:'Tidligere leder, MDG', d:'Grønn aktivist med sterk klimapessimisme og tro på globalt samarbeid.', s:{wc:78,tn:26,hd:36,dd:66}},
-  // WNDS
-  {n:'Hasan Piker', role:'Politisk kommentator, USA', d:'Antikapitalist med woke-profil, dypt skeptisk til det politiske etablissementet.', s:{wc:84,tn:42,hd:25,dd:34}},
-  // CTHG
-  {n:'Erna Solberg', role:'Tidligere statsminister (H)', d:'Markedsliberal konservativ med sterk tro på NATO, EU-samarbeid og institusjonene.', s:{wc:40,tn:60,hd:70,dd:76}},
-  {n:'Ine Eriksen Søreide', role:'Utenrikspolitiker (H)', d:'Atlantisk orientert og verdimoderat – trygg på NATO og vestlige allianser.', s:{wc:38,tn:58,hd:72,dd:80}},
-  // CTHS
-  {n:'Viktor Orbán', role:'Statsminister, Ungarn', d:'Nasjonalkonservativ med sterk tro på styre og orden – innenfor EU, men på egne premisser.', s:{wc:18,tn:58,hd:62,dd:24}},
-  // CTDG
-  {n:'Nick Bostrom', role:'Filosof og AI-forsker, Oxford', d:'Svensk-britisk tenker som advarer mot eksistensiell AI-risiko – tech-nær, kosmopolitt og dypt urolig for sivilisasjonens retning.', s:{wc:25,tn:75,hd:32,dd:70}},
-  // CTDS
-  {n:'Elon Musk', role:'CEO, Tesla / SpaceX / X', d:'Anti-woke tech-milliardær som bygger imperier og utfordrer det politiske etablissementet.', s:{wc:15,tn:88,hd:38,dd:42}},
-  {n:'Sylvi Listhaug', role:'Leder, Frp', d:'Folkepopulistisk høyrekonservativ med sterk anti-elite-retorikk og nasjonal profil.', s:{wc:18,tn:46,hd:40,dd:28}},
-  // CNHG
-  {n:'Olaug Bollestad', role:'Leder, KrF', d:'Kristendemokrat med tradisjonelle verdier, men raus holdning til bistand og flyktninger.', s:{wc:30,tn:36,hd:68,dd:65}},
-  // CNHS
-  {n:'Trygve Slagsvold Vedum', role:'Finansminister (Sp)', d:'Distrikts-nasjonalist med sterk tro på folkestyret og dyp skepsis til EU og elitene.', s:{wc:44,tn:38,hd:58,dd:32}},
-  {n:'Marine Le Pen', role:'Partileder, Rassemblement National', d:'Høyre-populist som balanserer nasjonal kontroll med velferdspolitikk.', s:{wc:22,tn:40,hd:55,dd:28}},
-  // CNDG
-  {n:'Jason Hickel', role:'Økonom og degrowth-teoretiker', d:'Akademiker som mener kapitalisme og teknologisk vekst er uforenlig med et levelig klima.', s:{wc:42,tn:22,hd:32,dd:65}},
-  // CNDS
-  {n:'Donald Trump', role:'President, USA', d:'Populistisk nasjonalist med sterk skepsis til globale institusjoner og «woke» kultureliter.', s:{wc:8,tn:46,hd:28,dd:12}},
-  {n:'Vladimir Putin', role:'President, Russland', d:'Autoritær nasjonalist med tradisjonelle verdier og dyp mistro til Vesten.', s:{wc:12,tn:38,hd:35,dd:16}},
+  {n:'Marie Sneve Martinussen', role:'Leder, Rødt',              d:'Antikapitalistisk klassevenstrepolitiker. Vil nasjonalisere velferd, styrke fagbevegelsen og skattlegge kapital og arv hardest.',          s:{op:88,wc:80,tn:32,hd:58,dd:38}},
+  {n:'Jeremy Corbyn',           role:'Politiker, Storbritannia', d:'Sosialistisk britisk politiker med sterk tro på nasjonalisering, fagforeninger og at markedet i seg selv er problemet.',                     s:{op:83,wc:62,tn:28,hd:46,dd:35}},
+  {n:'Audun Lysbakken',         role:'Leder, SV',                d:'Grønn sosialdemokrat som kombinerer sterk velferdsstat med internasjonal solidaritet og ambisiøs klimapolitikk.',                            s:{op:78,wc:76,tn:36,hd:66,dd:68}},
+  {n:'Jonas Gahr Støre',        role:'Statsminister (Ap)',        d:'Sosialdemokrat med progressiv profil, men skeptisk til EU og opptatt av nasjonal industripolitikk.',                                        s:{op:68,wc:58,tn:54,hd:68,dd:42}},
+  {n:'Trygve Slagsvold Vedum',  role:'Finansminister (Sp)',       d:'Distrikts-nasjonalist med sterk tro på offentlig eierskap i ressursene og dyp skepsis til EU og markedselitene.',                          s:{op:64,wc:44,tn:38,hd:58,dd:32}},
+  {n:'Olaug Bollestad',         role:'Leder, KrF',               d:'Kristendemokrat som forener tradisjonelle verdier med en forsvarlig velferdsstat og raus holdning til bistand.',                            s:{op:54,wc:30,tn:36,hd:68,dd:65}},
+  {n:'Erna Solberg',            role:'Tidligere statsminister (H)',d:'Markedsvennlig konservativ som forsvarere velferdsstaten – men lar markedet løse det markedet kan løse.',                                  s:{op:38,wc:40,tn:60,hd:70,dd:76}},
+  {n:'Guri Melby',              role:'Leder, Venstre',            d:'Sosialliberal og teknologioptimist som vil la markedet og innovasjon løse samfunnsutfordringene – sterk EU-tilhenger.',                     s:{op:33,wc:68,tn:65,hd:72,dd:78}},
+  {n:'Sylvi Listhaug',          role:'Leder, Frp',                d:'Folkepopulistisk høyrekonservativ som vil kutte skatter, redusere statens rolle og gi enkeltmennesket mer frihet.',                         s:{op:22,wc:18,tn:46,hd:40,dd:28}},
+  {n:'Elon Musk',               role:'CEO, Tesla / SpaceX / X',   d:'Anti-woke tech-milliardær som mener staten er problemet og teknologien løsningen – privatisering er innovasjon.',                           s:{op:15,wc:15,tn:88,hd:38,dd:42}},
+  {n:'Milton Friedman',         role:'Økonom (klassiker)',         d:'Frimarkedsøkonom og arkitekten bak moderne høyredreining: statlig inngripen ødelegger markedet og den individuelle friheten.',              s:{op:8, wc:38,tn:60,hd:72,dd:68}},
 ];
 
 const WIKI = {
-  'Guri Melby':              {wiki:'Guri_Melby',                   lang:'no'},
-  'Nikolai Astrup':          {wiki:'Nikolai_Astrup_(politiker)',    lang:'no'},
-  'Emmanuel Macron':         {wiki:'Emmanuel_Macron',              lang:'en'},
-  'Jonas Gahr Støre':        {wiki:'Jonas_Gahr_St%C3%B8re',        lang:'no'},
-  'Joe Biden':               {wiki:'Joe_Biden',                    lang:'en'},
-  'Sam Altman':              {wiki:'Sam_Altman',                   lang:'en'},
-  'Nayib Bukele':            {wiki:'Nayib_Bukele',                 lang:'en'},
-  'Audun Lysbakken':         {wiki:'Audun_Lysbakken',              lang:'no'},
-  'Kamala Harris':           {wiki:'Kamala_Harris',                lang:'en'},
-  'Marie Sneve Martinussen': {wiki:'Marie_Sneve_Martinussen',      lang:'no'},
-  'Bernie Sanders':          {wiki:'Bernie_Sanders',               lang:'en'},
-  'Greta Thunberg':          {wiki:'Greta_Thunberg',               lang:'en'},
-  'Lan Marie Berg':          {wiki:'Lan_Marie_Berg',               lang:'no'},
-  'Hasan Piker':             {wiki:'Hasan_Piker',                  lang:'en'},
-  'Erna Solberg':            {wiki:'Erna_Solberg',                 lang:'no'},
-  'Ine Eriksen Søreide':     {wiki:'Ine_Eriksen_S%C3%B8reide',     lang:'no'},
-  'Viktor Orbán':            {wiki:'Viktor_Orb%C3%A1n',            lang:'en'},
-  'Nick Bostrom':            {wiki:'Nick_Bostrom',                 lang:'en'},
-  'Elon Musk':               {wiki:'Elon_Musk',                   lang:'en'},
-  'Sylvi Listhaug':          {wiki:'Sylvi_Listhaug',               lang:'no'},
-  'Olaug Bollestad':         {wiki:'Olaug_Bollestad',              lang:'no'},
-  'Trygve Slagsvold Vedum':  {wiki:'Trygve_Slagsvold_Vedum',       lang:'no'},
-  'Marine Le Pen':           {wiki:'Marine_Le_Pen',                lang:'en'},
-  'Jason Hickel':            {wiki:'Jason_Hickel',                 lang:'en'},
-  'Donald Trump':            {wiki:'Donald_Trump',                 lang:'en'},
-  'Vladimir Putin':          {wiki:'Vladimir_Putin',               lang:'en'},
+  'Marie Sneve Martinussen': {wiki:'Marie_Sneve_Martinussen',     lang:'no'},
+  'Jeremy Corbyn':           {wiki:'Jeremy_Corbyn',               lang:'en'},
+  'Audun Lysbakken':         {wiki:'Audun_Lysbakken',             lang:'no'},
+  'Jonas Gahr Støre':        {wiki:'Jonas_Gahr_St%C3%B8re',       lang:'no'},
+  'Trygve Slagsvold Vedum':  {wiki:'Trygve_Slagsvold_Vedum',      lang:'no'},
+  'Olaug Bollestad':         {wiki:'Olaug_Bollestad',             lang:'no'},
+  'Erna Solberg':            {wiki:'Erna_Solberg',                lang:'no'},
+  'Guri Melby':              {wiki:'Guri_Melby',                  lang:'no'},
+  'Sylvi Listhaug':          {wiki:'Sylvi_Listhaug',              lang:'no'},
+  'Elon Musk':               {wiki:'Elon_Musk',                  lang:'en'},
+  'Milton Friedman':         {wiki:'Milton_Friedman',             lang:'en'},
 };
 
 function findClosestPolitician(res){
-  const ax = {wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
+  const ax = {op:(res.op?.pct??50), wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
   let best = null, bestDist = Infinity;
   POLITICIANS.forEach(p => {
-    const d = Math.hypot(ax.wc-p.s.wc, ax.tn-p.s.tn, ax.hd-p.s.hd, ax.dd-p.s.dd);
+    const d = Math.hypot(3*(ax.op-p.s.op), ax.wc-p.s.wc, ax.tn-p.s.tn, ax.hd-p.s.hd, ax.dd-p.s.dd);
     if(d < bestDist){ bestDist = d; best = Object.assign({}, p, WIKI[p.n]||{}); }
   });
   return best;
 }
 
 function nearbyText(res, match){
-  const u = {wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
-  const labels = {wc:'kulturaksen', tn:'teknologiaksen', hd:'optimismeaksen', dd:'globaliseringsaksen'};
-  const diffs = ['wc','tn','hd','dd'].map(id => ({label:labels[id], d:Math.abs(u[id]-match.s[id])}));
+  const u = {op:(res.op?.pct??50), wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
+  const labels = {op:'stat/marked-aksen', wc:'kulturaksen', tn:'teknologiaksen', hd:'optimismeaksen', dd:'globaliseringsaksen'};
+  const diffs = ['op','wc','tn','hd','dd'].map(id => ({label:labels[id], d:Math.abs(u[id]-match.s[id])}));
   diffs.sort((a,b) => a.d-b.d);
   let t = 'Dere ligner mest på hverandre på '+diffs[0].label+' og '+diffs[1].label+'.';
-  if(diffs[3].d > 22) t += ' Størst avstand mellom dere er det på '+diffs[3].label+'.';
+  if(diffs[4].d > 22) t += ' Størst avstand mellom dere er det på '+diffs[4].label+'.';
   return t;
 }
 </script>
