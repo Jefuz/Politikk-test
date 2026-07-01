@@ -82,6 +82,11 @@
   details p{margin:0 0 12px;font-size:.9rem;color:var(--muted)}
   ul.disc-q{margin:.4em 0 0;padding-left:1.1em}
   ul.disc-q li{margin:.35em 0}
+  .intro-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;margin-bottom:12px}
+  .itc{padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid var(--line)}
+  .itc-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:.78rem;color:var(--accent);margin-bottom:3px}
+  .itc-name{font-weight:600;font-size:.85rem;margin-bottom:3px}
+  .itc-desc{color:var(--muted);font-size:.78rem;line-height:1.4}
   @media print{.btn,.nav,.no-print{display:none!important}body{background:#fff}}
 </style>
 </head>
@@ -106,6 +111,10 @@
         <span class="muted small">57 spørsmål, omtrent 9 minutter.</span>
       </div>
     </div>
+    <details style="margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:#fbfcff">
+      <summary style="cursor:pointer;padding:11px 0;font-weight:600;font-size:.9rem;color:var(--accent)">Se de 16 mulige profilene</summary>
+      <div class="intro-types" id="introTypes"></div>
+    </details>
   </section>
 
   <!-- QUIZ -->
@@ -539,6 +548,20 @@ function showResults(){
   document.getElementById('results').style.display = 'block';
   window.scrollTo(0,0);
 }
+
+(function populateIntroTypes(){
+  const container = document.getElementById('introTypes');
+  if(!container) return;
+  Object.entries(TYPES).forEach(([code, ty]) => {
+    const card = document.createElement('div');
+    card.className = 'itc';
+    card.innerHTML =
+      '<div class="itc-code">'+code+'</div>'+
+      '<div class="itc-name">'+ty.n+'</div>'+
+      '<div class="itc-desc">'+ty.d+'</div>';
+    container.appendChild(card);
+  });
+})();
 </script>
 </body>
 </html>
