@@ -384,11 +384,11 @@ function showResults(){
     const verdict = pct >= 62 ? ax.descLeft : (pct <= 38 ? ax.descRight : ax.descMid);
     const sideLabel = pct >= 55 ? ax.left : (pct <= 45 ? ax.right : 'Midt imellom');
     block.innerHTML =
-      '<div class="ends"><span style="color:'+ax.color+'">'+ax.left+'</span>'+
+      '<div class="ends"><span style="color:'+ax.color+'">'+ax.right+'</span>'+
       '<span class="muted">'+ax.title+'</span>'+
-      '<span style="color:'+ax.color+'">'+ax.right+'</span></div>'+
+      '<span style="color:'+ax.color+'">'+ax.left+'</span></div>'+
       '<div class="track"><div class="mid"></div>'+
-      '<div class="mark" style="left:'+(100-pct)+'%;background:'+ax.color+'"></div></div>'+
+      '<div class="mark" style="left:'+pct+'%;background:'+ax.color+'"></div></div>'+
       '<div class="verdict"><b>'+sideLabel+'</b> &middot; '+verdict+
       ' <span class="muted small">('+pct+'/100 mot '+ax.left+')</span></div>'+
       '<details><summary>Faglig kobling</summary><p>'+ax.faglig+'</p></details>';
