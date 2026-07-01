@@ -64,6 +64,11 @@
   .tfig{color:var(--muted);font-size:.9rem}
   .tdesc{margin-top:10px;font-size:.95rem}
   .tclar{margin-top:6px;font-size:.8rem;color:var(--muted)}
+  .pcard{border:1px solid #c7d2fe;border-radius:14px;padding:16px;background:#f0f4ff;margin-top:12px}
+  .pcard-label{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6366f1;margin-bottom:8px}
+  .pcard-name{font-size:1.2rem;font-weight:700;margin:0 0 2px}
+  .pcard-role{font-size:.86rem;color:var(--muted);margin-bottom:6px}
+  .pcard-why{font-size:.9rem;line-height:1.45}
   .trare{font-size:.9rem;color:#6b5a23;background:#fff8e9;border:1px solid #f3e2b8;border-radius:10px;padding:8px 10px;margin-bottom:12px}
   .tlist{display:grid;gap:6px;margin:8px 0 12px}
   .trowmini{display:flex;gap:10px;align-items:baseline;font-size:.9rem}
@@ -273,22 +278,22 @@ function scoreAll(answers){
 }
 
 const TYPES = {
-  WTHG:{n:'Liberal teknolog-optimist', f:'Melby (V)', d:'Sosialliberal, innovasjonsvennlig og for frihandel.'},
-  WTHS:{n:'Industripatriot', f:'AP-venstre, LO, «Nei til EU»', d:'Sosialdemokratisk progressiv og industrioptimist, men EU-skeptisk og for nasjonal kontroll.'},
-  WTDG:{n:'KI-dommedagsprofet', f:'engstelig kosmopolitt', d:'Teknologinær, men dypt urolig for hvor det bærer.'},
-  WTDS:{n:'Krypto-anarkist', f:'e/acc, «Network State»', d:'Progressiv og teknofrelst, men har mistet troen på institusjonene og vil ut av systemet.'},
-  WNHG:{n:'Grønn idealist', f:'Hermstad (MDG)', d:'Grønn, global og løsningsorientert.'},
-  WNHS:{n:'Rødgrønn feminist', f:'Bergstø (SV)', d:'Feminisme og mangfold, økososialisme, EU-skeptisk.'},
-  WNDG:{n:'Klima-dommedagsprofet', f:'Thunberg-typen', d:'Vekstkritisk, global og dypt bekymret for klimaet.'},
-  WNDS:{n:'Antikapitalist', f:'Sneve Martinussen (R)', d:'Klassevenstre, systemkritisk og anti-EU.'},
-  CTHG:{n:'Atlantisk konservativ', f:'Søreide, Solberg (H)', d:'Markedsvennlig, atlantisk og verdimoderat.'},
-  CTHS:{n:'Nasjonalkonservativ pragmatiker', f:'Frp regjeringsfløy', d:'Verdikonservativ og produktivist, men lojal til systemet.'},
-  CTDG:{n:'Luksuskommunist', f:'Bastani, FALC', d:'Klassevenstre og akselerasjonist: automasjon skal frigjøre fra arbeid. Avviser identitetspolitikk.'},
-  CTDS:{n:'Techno-nasjonalist', f:'Listhaug (Frp), Musk', d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.'},
-  CNHG:{n:'Kristendemokrat', f:'Ulstein (KrF)', d:'Tradisjonelle verdier, men raus på bistand og flyktninger.'},
-  CNHS:{n:'Sentrum-suverenist', f:'Vedum (Sp)', d:'Distrikt og norske interesser, anti-EU, uten autoritær side.'},
-  CNDG:{n:'Øko-primitivist', f:'degrowth-venstre', d:'Klasse og økologi først, dypt teknologifiendtlig og systemkritisk.'},
-  CNDS:{n:'Declinistisk nasjonalist', f:'«beste dagene bak oss»', d:'Tradisjonell og nasjonal, overbevist om at det går nedover.'}
+  WTHG:{n:'Liberal teknolog-optimist', figures:['Melby (V)','Astrup (H)','Macron','Abid Raja (V)'], d:'Sosialliberal, innovasjonsvennlig og for frihandel.'},
+  WTHS:{n:'Industripatriot', figures:['Støre (Ap)','LO-venstre','Biden','Tajik (Ap)'], d:'Sosialdemokratisk progressiv og industrioptimist, men EU-skeptisk og for nasjonal kontroll.'},
+  WTDG:{n:'KI-dommedagsprofet', figures:['Sam Altman','Nick Bostrom','engstelig kosmopolitt'], d:'Teknologinær, men dypt urolig for hvor det bærer.'},
+  WTDS:{n:'Krypto-anarkist', figures:['e/acc','Bukele','Balaji','«Network State»'], d:'Progressiv og teknofrelst, men har mistet troen på institusjonene og vil ut av systemet.'},
+  WNHG:{n:'Grønn idealist', figures:['Hermstad (MDG)','Lysbakken (SV)','Kamala Harris'], d:'Grønn, global og løsningsorientert.'},
+  WNHS:{n:'Rødgrønn feminist', figures:['Bergstø (SV)','Martinussen (R)','Bernie Sanders'], d:'Feminisme og mangfold, økososialisme, EU-skeptisk.'},
+  WNDG:{n:'Klima-dommedagsprofet', figures:['Thunberg','Lan Marie Berg (MDG)','Extinction Rebellion'], d:'Vekstkritisk, global og dypt bekymret for klimaet.'},
+  WNDS:{n:'Antikapitalist', figures:['Sneve Martinussen (R)','Hasan Piker','zapatistene'], d:'Klassevenstre, systemkritisk og anti-EU.'},
+  CTHG:{n:'Atlantisk konservativ', figures:['Søreide (H)','Solberg (H)','Macron','Merkel'], d:'Markedsvennlig, atlantisk og verdimoderat.'},
+  CTHS:{n:'Nasjonalkonservativ pragmatiker', figures:['Frp regjeringsfløy','Jensen (Frp)','Orbán','Meloni'], d:'Verdikonservativ og produktivist, men lojal til systemet.'},
+  CTDG:{n:'Luksuskommunist', figures:['Bastani','FALC-bevegelsen','Peter Thiel (vridning)'], d:'Klassevenstre og akselerasjonist: automasjon skal frigjøre fra arbeid. Avviser identitetspolitikk.'},
+  CTDS:{n:'Techno-nasjonalist', figures:['Listhaug (Frp)','Elon Musk','Vivek Ramaswamy','MAGA-tech'], d:'Anti-woke, produktivist, folkelig elite-kritikk og nasjonalist.'},
+  CNHG:{n:'Kristendemokrat', figures:['Ulstein (KrF)','Bollestad (KrF)','Pete Buttigieg'], d:'Tradisjonelle verdier, men raus på bistand og flyktninger.'},
+  CNHS:{n:'Sentrum-suverenist', figures:['Vedum (Sp)','Pollestad (Sp)','Marine Le Pen (moderat)'], d:'Distrikt og norske interesser, anti-EU, uten autoritær side.'},
+  CNDG:{n:'Øko-primitivist', figures:['degrowth-venstre','Jason Hickel','Serge Latouche'], d:'Klasse og økologi først, dypt teknologifiendtlig og systemkritisk.'},
+  CNDS:{n:'Declinistisk nasjonalist', figures:['Trump','Orbán','Putin','Hege Storhaug'], d:'Tradisjonell og nasjonal, overbevist om at det går nedover.'}
 };
 
 function typeResult(res){
@@ -297,6 +302,61 @@ function typeResult(res){
   const cc = v => v>=50 ? 100-v : v;
   const ownDist = Math.hypot(cc(ax.wc), cc(ax.tn), cc(ax.hd), cc(ax.dd));
   return { code, clarity: Math.round((1-ownDist/100)*100) };
+}
+
+const POLITICIANS = [
+  // WTHG
+  {n:'Guri Melby', role:'Leder, Venstre', d:'Sosialliberal og teknologioptimist med sterk tro på EU og internasjonalt samarbeid.', s:{wc:68,tn:65,hd:72,dd:78}},
+  {n:'Nikolai Astrup', role:'Digitaliseringsminister (H)', d:'Høyre-liberal med sterk tro på teknologi og transatlantisk samarbeid.', s:{wc:52,tn:72,hd:70,dd:76}},
+  {n:'Emmanuel Macron', role:'President, Frankrike', d:'Sentrumspolitiker med sterk tro på Europa, markedet og teknologisk modernisering.', s:{wc:60,tn:65,hd:68,dd:84}},
+  // WTHS
+  {n:'Jonas Gahr Støre', role:'Statsminister (Ap)', d:'Sosialdemokrat med progressiv profil, men skeptisk til EU og opptatt av nasjonal industripolitikk.', s:{wc:58,tn:54,hd:68,dd:42}},
+  {n:'Joe Biden', role:'President, USA (2021–2025)', d:'Progressiv og pro-union, trygg på institusjonene – men nasjonalistisk på handel.', s:{wc:62,tn:52,hd:70,dd:38}},
+  // WTDG
+  {n:'Sam Altman', role:'CEO, OpenAI', d:'Akselererer KI-utviklingen, men er genuint urolig for hva den kan føre til.', s:{wc:58,tn:85,hd:35,dd:72}},
+  // WTDS
+  {n:'Nayib Bukele', role:'President, El Salvador', d:'Bitcoin-entusiast og teknofrelst populist som har samlet makt på bekostning av demokratiet.', s:{wc:58,tn:82,hd:30,dd:22}},
+  // WNHG
+  {n:'Audun Lysbakken', role:'Leder, SV', d:'Grønn sosialist med sterk tro på offentlig sektor og internasjonalt solidaritet.', s:{wc:76,tn:36,hd:66,dd:68}},
+  {n:'Kamala Harris', role:'Visepresident, USA (2021–2025)', d:'Progressiv og institusjonslojal, tror på systemet og internasjonalt samarbeid.', s:{wc:70,tn:45,hd:62,dd:68}},
+  // WNHS
+  {n:'Marie Sneve Martinussen', role:'Leder, Rødt', d:'Klassevenstrepolitiker, feminist og systemkritiker – men innenfor parlamentariske rammer.', s:{wc:80,tn:32,hd:58,dd:38}},
+  {n:'Bernie Sanders', role:'Senator, USA', d:'Sosialdemokrat med dyp skepsis til Wall Street og ønske om nasjonal velferdsstat.', s:{wc:68,tn:38,hd:62,dd:35}},
+  // WNDG
+  {n:'Greta Thunberg', role:'Klimaaktivist, Sverige', d:'Radikal klimaforkjemper: systemkritisk, vekstkritisk og pessimistisk om politikernes vilje.', s:{wc:82,tn:20,hd:28,dd:68}},
+  {n:'Lan Marie Berg', role:'Tidligere leder, MDG', d:'Grønn aktivist med sterk klimapessimisme og tro på globalt samarbeid.', s:{wc:78,tn:26,hd:36,dd:66}},
+  // WNDS
+  {n:'Hasan Piker', role:'Politisk kommentator, USA', d:'Antikapitalist med woke-profil, dypt skeptisk til det politiske etablissementet.', s:{wc:84,tn:42,hd:25,dd:34}},
+  // CTHG
+  {n:'Erna Solberg', role:'Tidligere statsminister (H)', d:'Markedsliberal konservativ med sterk tro på NATO, EU-samarbeid og institusjonene.', s:{wc:40,tn:60,hd:70,dd:76}},
+  {n:'Ine Eriksen Søreide', role:'Utenrikspolitiker (H)', d:'Atlantisk orientert og verdimoderat – trygg på NATO og vestlige allianser.', s:{wc:38,tn:58,hd:72,dd:80}},
+  // CTHS
+  {n:'Viktor Orbán', role:'Statsminister, Ungarn', d:'Nasjonalkonservativ med sterk tro på styre og orden – innenfor EU, men på egne premisser.', s:{wc:18,tn:58,hd:62,dd:24}},
+  // CTDG
+  {n:'Peter Thiel', role:'Investor og teknolog, USA', d:'Libertarian tech-akselerasjonist som er dypt pessimistisk på demokratiets vegne.', s:{wc:20,tn:80,hd:35,dd:62}},
+  // CTDS
+  {n:'Elon Musk', role:'CEO, Tesla / SpaceX / X', d:'Anti-woke tech-milliardær som bygger imperier og utfordrer det politiske etablissementet.', s:{wc:15,tn:88,hd:38,dd:42}},
+  {n:'Sylvi Listhaug', role:'Leder, Frp', d:'Folkepopulistisk høyrekonservativ med sterk anti-elite-retorikk og nasjonal profil.', s:{wc:18,tn:52,hd:40,dd:28}},
+  // CNHG
+  {n:'Olaug Bollestad', role:'Leder, KrF', d:'Kristendemokrat med tradisjonelle verdier, men raus holdning til bistand og flyktninger.', s:{wc:30,tn:36,hd:68,dd:65}},
+  // CNHS
+  {n:'Trygve Slagsvold Vedum', role:'Finansminister (Sp)', d:'Distrikts-nasjonalist med sterk tro på folkestyret og dyp skepsis til EU og elitene.', s:{wc:44,tn:38,hd:58,dd:32}},
+  {n:'Marine Le Pen', role:'Partileder, Rassemblement National', d:'Høyre-populist som balanserer nasjonal kontroll med velferdspolitikk.', s:{wc:22,tn:40,hd:55,dd:28}},
+  // CNDG
+  {n:'Jason Hickel', role:'Økonom og degrowth-teoretiker', d:'Akademiker som mener kapitalisme og teknologisk vekst er uforenlig med et levelig klima.', s:{wc:42,tn:22,hd:32,dd:65}},
+  // CNDS
+  {n:'Donald Trump', role:'President, USA', d:'Populistisk nasjonalist med sterk skepsis til globale institusjoner og «woke» kultureliter.', s:{wc:8,tn:52,hd:28,dd:12}},
+  {n:'Vladimir Putin', role:'President, Russland', d:'Autoritær nasjonalist med tradisjonelle verdier og dyp mistro til Vesten.', s:{wc:12,tn:38,hd:35,dd:16}},
+];
+
+function findClosestPolitician(res){
+  const ax = {wc:res.wc.pct, tn:res.tn.pct, hd:res.hd.pct, dd:res.dd.pct};
+  let best = null, bestDist = Infinity;
+  POLITICIANS.forEach(p => {
+    const d = Math.hypot(ax.wc-p.s.wc, ax.tn-p.s.tn, ax.hd-p.s.hd, ax.dd-p.s.dd);
+    if(d < bestDist){ bestDist = d; best = p; }
+  });
+  return best;
 }
 </script>
 
@@ -372,7 +432,7 @@ function showResults(){
   const tcard = document.createElement('div'); tcard.className = 'tcard';
   tcard.innerHTML =
     '<div class="trow"><span class="tcode">'+shown+'</span>'+
-    '<div><div class="tname">'+ty.n+'</div><div class="tfig">'+ty.f+'</div></div></div>'+
+    '<div><div class="tname">'+ty.n+'</div><div class="tfig">'+ty.figures.join(' · ')+'</div></div></div>'+
     '<div class="tdesc">'+ty.d+'</div>'+
     '<div class="tclar">Tydelighet '+tr.clarity+' prosent (hvor rendyrket profilen din er)</div>';
   card.appendChild(tcard);
@@ -394,6 +454,15 @@ function showResults(){
       '<details><summary>Faglig kobling</summary><p>'+ax.faglig+'</p></details>';
     card.appendChild(block);
   });
+  const match = findClosestPolitician(res);
+  const pcard = document.createElement('div'); pcard.className = 'pcard';
+  pcard.innerHTML =
+    '<div class="pcard-label">Nærmeste kjente profil</div>'+
+    '<div class="pcard-name">'+match.n+'</div>'+
+    '<div class="pcard-role">'+match.role+'</div>'+
+    '<div class="pcard-why">'+match.d+'</div>';
+  card.appendChild(pcard);
+
   const note = document.createElement('div'); note.className = 'disc'; note.style.marginTop = '14px';
   note.innerHTML = 'Husk: dette er ikke en validert måling. Ledende spørsmål, ujevne svaralternativer og sosial ønskverdighet gjør at resultatet bør leses som et utgangspunkt for samtale, ikke en fasit. (I psykologi er nettopp dette et godt eksempel på lav validitet og reliabilitet.)';
   card.appendChild(note);
@@ -404,7 +473,7 @@ function showResults(){
   ['WTHG','WTHS','WTDG','WTDS','WNHG','WNHS','WNDG','WNDS','CTHG','CTHS','CTDG','CTDS','CNHG','CNHS','CNDG','CNDS'].forEach(c => {
     const t = TYPES[c];
     const row = document.createElement('div'); row.className = 'trowmini' + (c === shown ? ' on' : '');
-    row.innerHTML = '<span class="tmini">'+c+'</span><span>'+t.n+' <span class="muted small">'+t.f+'</span></span>';
+    row.innerHTML = '<span class="tmini">'+c+'</span><span>'+t.n+' <span class="muted small">'+t.figures.slice(0,2).join(', ')+'</span></span>';
     tl.appendChild(row);
   });
   det.appendChild(tl);
