@@ -560,6 +560,64 @@ function makeMap(cfg, res){
     `<div style="display:flex;justify-content:space-between;font-size:.68rem;color:#9ca3af;margin-bottom:1px"><span>← ${xLeft}</span><span>${xRight} →</span></div>`+
     `<div style="border-radius:6px;overflow:hidden;border:1px solid #dde3f0">${svg}</div></div>`;
 }
+function makeRadar(res){
+  const axes = [
+    {id:'wc', L:'Woke',       R:'Chud',        color:'#7c3aed'},
+    {id:'op', L:'Offentlig',  R:'Privat',       color:'#9d174d'},
+    {id:'dd', L:'Davos',      R:'Dubai',        color:'#ea580c'},
+    {id:'hd', L:'Hopepilled', R:'Doomer',       color:'#16a34a'},
+    {id:'tn', L:'Techbro',    R:'Neo-luddist',  color:'#0891b2'},
+  ];
+  const N=5, W=420, H=310, cx=210, cy=155, r=95, lDist=125;
+  const ang = i => -Math.PI/2 + (2*Math.PI*i/N);
+
+  const grids = [0.25,0.5,0.75,1].map(lv=>{
+    const pts = Array.from({length:N},(_,i)=>`${cx+Math.cos(ang(i))*r*lv},${cy+Math.sin(ang(i))*r*lv}`).join(' ');
+    if(lv===0.5) return `<polygon points="${pts}" fill="rgba(99,102,241,.05)" stroke="#a5b4fc" stroke-width="1.5"/>`;
+    if(lv===1)   return `<polygon points="${pts}" fill="none" stroke="#d1d5db" stroke-width="1.5"/>`;
+    return `<polygon points="${pts}" fill="none" stroke="#e9ecf5" stroke-width="1" stroke-dasharray="3,3"/>`;
+  });
+
+  const axLines = Array.from({length:N},(_,i)=>
+    `<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(ang(i))*r}" y2="${cy+Math.sin(ang(i))*r}" stroke="#e4e7ef" stroke-width="1"/>`);
+
+  const uPts = axes.map((ax,i)=>{
+    const pct=(res[ax.id]?.pct??50)/100;
+    return `${cx+Math.cos(ang(i))*r*pct},${cy+Math.sin(ang(i))*r*pct}`;
+  }).join(' ');
+
+  const uDots = axes.map((ax,i)=>{
+    const pct=(res[ax.id]?.pct??50)/100;
+    return `<circle cx="${cx+Math.cos(ang(i))*r*pct}" cy="${cy+Math.sin(ang(i))*r*pct}" r="4.5" fill="${ax.color}" stroke="#fff" stroke-width="1.5"/>`;
+  });
+
+  const lbls = axes.map((ax,i)=>{
+    const c=Math.cos(ang(i)), s=Math.sin(ang(i));
+    const lx=cx+c*lDist, ly=cy+s*lDist;
+    const anchor=c>0.3?'start':c<-0.3?'end':'middle';
+    return `<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle" font-size="10" font-weight="700" fill="${ax.color}">${ax.L}</text>`;
+  });
+
+  const antilbls = axes.map((ax,i)=>{
+    const c=Math.cos(ang(i)), s=Math.sin(ang(i));
+    const lx=cx-c*18, ly=cy-s*18;
+    const anchor=c<-0.3?'start':c>0.3?'end':'middle';
+    return `<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle" font-size="7.5" fill="#94a3b8">${ax.R}</text>`;
+  });
+
+  return `<div style="margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 10px">
+    <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:center;margin-bottom:2px">Femakset profil</div>
+    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:${W}px;display:block;margin:0 auto">
+      ${grids.join('')}
+      ${axLines.join('')}
+      <polygon points="${uPts}" fill="rgba(63,81,181,.15)" stroke="#3f51b5" stroke-width="2"/>
+      ${uDots.join('')}
+      ${lbls.join('')}
+      ${antilbls.join('')}
+    </svg>
+    <div style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:0">Ytterst = 100 % mot navngitt pol · Blå ring = nøytral midtposisjon (50 %)</div>
+  </div>`;
+}
 function copyResultLink(btn){
   navigator.clipboard.writeText(location.href).then(()=>{
     btn.textContent='Kopiert!';
@@ -613,6 +671,7 @@ function showResults(preRes){
     makeMap({xId:'wc',yId:'tn',xLeft:'Chud',xRight:'Woke',yTop:'Techbro',yBot:'Neo-luddist',title:'Kultur / Teknologi',typePos:M1_POS},res)+
     makeMap({xId:'hd',yId:'dd',xLeft:'Doomer',xRight:'Hopepilled',yTop:'Davos',yBot:'Dubai',title:'Framtidstro / Globalisme',typePos:M2_POS},res);
   card.appendChild(mwrap);
+  card.insertAdjacentHTML('beforeend', makeRadar(res));
   const match = findClosestPolitician(res);
   const pcard = document.createElement('div'); pcard.className = 'pcard';
   pcard.innerHTML =
