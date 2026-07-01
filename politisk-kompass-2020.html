@@ -167,6 +167,9 @@
 
 <!-- DATA + REN SKAARINGSLOGIKK (ingen DOM) -->
 <script id="logic">
+// Sett inn din Worker-URL etter deployment, f.eks. 'https://kompass-stats.BRUKERNAVN.workers.dev'
+const STATS_URL = '';
+
 const AXES = [
   { id:'wc', left:'Woke', right:'Chud', title:'Identitet og kultur', color:'#7c3aed',
     descLeft:'Du legger stor vekt på identitet, likestilling og oppreisning for historisk urett.',
@@ -576,6 +579,7 @@ function showResults(preRes){
   const tr = typeResult(res);
   const shown = tr.code;
   const ty = TYPES[shown];
+  if(STATS_URL && !preRes) try{ fetch(STATS_URL+'/ping?type='+shown).catch(()=>{}); }catch(_){}
   const tcard = document.createElement('div'); tcard.className = 'tcard';
   tcard.innerHTML =
     '<div class="trow"><span class="tcode">'+shown+'</span>'+

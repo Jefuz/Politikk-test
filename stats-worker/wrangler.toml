@@ -1,0 +1,7 @@
+name = "kompass-stats"
+main = "index.js"
+compatibility_date = "2024-09-01"
+
+[[kv_namespaces]]
+binding = "STATS"
+id = "FYLL_INN_KV_NAMESPACE_ID_HER"
